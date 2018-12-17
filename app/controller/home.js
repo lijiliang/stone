@@ -8,6 +8,12 @@ const Controller = require('egg').Controller;
  * controller 控制器  负责处理一些业务逻辑的处理
  * model 模型（service）： 和数据打交道(查询数据库，请求数据)
  */
+/**
+ *
+ *
+ * @class HomeController
+ * @extends {Controller}
+ */
 class HomeController extends Controller {
   async index() {
     // 调用extend里面扩展的appliction
