@@ -8,7 +8,12 @@ exports.ejs = {
   package: 'egg-view-ejs',
 };
 
-exports.mysql = {
+// exports.mysql = {
+//   enable: true,
+//   package: 'egg-mysql',
+// };
+
+exports.sequelize = {
   enable: true,
-  package: 'egg-mysql',
+  package: 'egg-sequelize',
 };
