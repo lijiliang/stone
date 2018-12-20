@@ -3,7 +3,7 @@
 // 外部通过 this.ctx.request.foo()
 
 module.exports = {
-  foo(param) {
+  foo() {
     console.log(this);
     return 'request';
   },

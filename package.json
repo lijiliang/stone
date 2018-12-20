@@ -21,6 +21,7 @@
     "egg-mock": "^3.14.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
+    "factory-girl": "^5.0.4",
     "sequelize-cli": "^5.4.0",
     "webstorm-disable-index": "^1.2.0"
   },
@@ -38,7 +39,7 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "sequelize": "sequelize --"
+    "cit": "eslint . && NODE_ENV=test npx sequelize db:migrate && egg-bin cov"
   },
   "ci": {
     "version": "8"
