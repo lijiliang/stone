@@ -24,7 +24,8 @@ module.exports = appInfo => {
     port: 3306,
     username: 'root',
     password: 'Q1234567890',
-    database: 'egg-sequelize-doc-default',
+    database: 'stone_instgram',
+    operatorsAliases: false,
   };
 
   config.security = {
