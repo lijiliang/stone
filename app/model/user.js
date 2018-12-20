@@ -7,7 +7,7 @@ module.exports = app => {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     name: STRING(30),
     age: INTEGER,
-    // email: { type: STRING(255), allowNull: false }, // email 地址
+    // email: { type: STRING(255), allowNull: false, comment: "email 地址" }, // email 地址
     // password: { type: STRING(255), allowNull: false }, // 密码
     created_at: DATE,
     updated_at: DATE,

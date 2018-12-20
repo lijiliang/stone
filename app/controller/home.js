@@ -10,7 +10,7 @@ class HomeController extends Controller {
       // email: '1812413@qq.com',
       // password: '124ljsadfjsadfsajdf',
     };
-    const user = await this.ctx.model.User.create(userinfo);
+    // const user = await this.ctx.model.User.create(userinfo);
     // console.log(this.app.model.User, user);
 
     // 获取所有数据

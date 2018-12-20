@@ -24,5 +24,11 @@ module.exports = appInfo => {
     database: 'egg-sequelize-doc-default',
   };
 
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
+
   return config;
 };
