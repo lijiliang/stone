@@ -24,8 +24,8 @@ module.exports = appInfo => {
     port: 3306,
     username: 'root',
     password: 'Q1234567890',
-    database: 'stone_instgram',
-    operatorsAliases: false,
+    database: 'stone_instagram',
+    // operatorsAliases: false,
   };
 
   config.security = {

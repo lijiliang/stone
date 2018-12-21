@@ -6,7 +6,7 @@ module.exports = {
     const { INTEGER, DATE, STRING } = Sequelize;
     await queryInterface.createTable('users', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true }, // 记录Id
-      userid: { type: INTEGER }, // 用户Id
+      userid: { type: STRING(255) }, // 用户Id
       username: { type: STRING(255), allowNull: false }, // 用户名
       email: { type: STRING(255), allowNull: false }, // email 地址
       password: { type: STRING(255), allowNull: false }, // 密码

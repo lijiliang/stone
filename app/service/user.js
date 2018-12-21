@@ -1,0 +1,66 @@
+'use strict';
+
+const Service = require('egg').Service;
+const uuidv4 = require('uuid/v4');
+
+class UserService extends Service {
+
+  /*
+   * 查询邮箱是否已经注册 私有方法
+   * @param {String} email 邮箱
+   */
+  async _hasRegister(email) {
+    // 查询用户名
+    const user = await this.ctx.model.User.findOne({
+      where: { email },
+    });
+    if (user && user.dataValues.userid) {
+      return true;
+    }
+
+    return false;
+  }
+  /*
+   * 注册
+   * @param {Object} registerParams 用户注册的信息 {password, username, email, mobile}
+   */
+  async register(registerParams) {
+    const { ctx } = this;
+    // 添加uuid
+    registerParams.userid = uuidv4().replace(/-/g, '');
+
+    // 是否可以查询到
+    const queryResult = await this._hasRegister(registerParams.email);
+    if (queryResult) {
+      ctx.returnBody(200, '邮箱已被使用', {
+        message: '邮箱已被使用',
+        flag: false,
+      });
+      return;
+    }
+
+    const userInfo = await ctx.model.User.create(registerParams);
+
+    // 注册成功，返回userid给前端
+    ctx.status = 200;
+    ctx.returnBody(200, '注册成功', {
+      userId: userInfo.dataValues.userid,
+      flag: true,
+    });
+
+    return userInfo.dataValues;
+  }
+  /*
+   * 根据userId查找用户
+   * @param {String} userId 用户Id
+   * @return {Promise[user]} 承载用户的 Promise 对象
+   */
+  async getUserByUserId(userId) {
+    const query = { userId };
+    return this.ctx.model.User.findOne({
+      where: query,
+    });
+  }
+}
+
+module.exports = UserService;
