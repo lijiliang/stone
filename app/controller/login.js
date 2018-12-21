@@ -1,41 +1,18 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const regrule = require('../utils/regrule');
 
-// 定义创建接口的请求参数规则
-const createRule = {
-  password: 'string',
+// 定义注册的请求参数规则
+// https://github.com/node-modules/parameter
+const registerParamRule = {
+  password: { type: 'string', format: regrule.regPassword, required: true, message: '密码不正确' },
   username: { type: 'string', required: true, message: '用户名不能为空' },
   email: { type: 'email', required: true, message: '邮箱不正确' },
-  mobile: { type: 'string', format: /\d+/, message: '手机号不正确' },
+  mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
 };
 
 class LoginController extends Controller {
-  constructor(ctx) {
-    super(ctx);
-    this.__errNotice = function() {
-      const { ctx } = this;
-      const { mobile, password, username, email } = ctx.request.body;
-      // 参数检验
-      let message;
-      if (!mobile || !email) {
-        message = '手机号或者邮箱不能为空';
-      } else if (!username) {
-        message = '用户名不能为空';
-      } else if (!password) {
-        message = '密码不能为空';
-      }
-
-      // 抛出异常
-      if (message) {
-        // ctx.throw(400, message);
-        ctx.returnBody(200, message, {}, false);
-        return;
-      }
-      return true;
-    };
-  }
-
   // 注册
   async register() {
     const ctx = this.ctx;
@@ -43,9 +20,27 @@ class LoginController extends Controller {
 
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
-    ctx.validate(createRule, ctx.request.body);
-    // 错误处理
-    if (!this.__errNotice()) return;
+    ctx.validate(registerParamRule, ctx.request.body);
+
+    // 以下两种方法都可以获取到参数检验未通过的错误信息，并重组显示到body中
+    // const paramErrors = this.app.validator.validate(registerParamRule, ctx.request.body);
+    // if (paramErrors && paramErrors.length) {
+    //   ctx.logger.warn(paramErrors);
+    //   ctx.returnBody(200, '参数校验失败', paramErrors, false);
+    //   return;
+    // }
+
+    // try {
+    //   ctx.validate(registerParamRule, ctx.request.body);
+    // } catch (err) {
+    //   ctx.logger.warn(err.errors);
+
+    //   ctx.body = {
+    //     success: false,
+    //     message: '参数校验失败',
+    //     data: err };
+    //   return;
+    // }
 
     // 注册成功返回体
     await ctx.service.user.register({ password, username, email, mobile });

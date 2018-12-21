@@ -16,7 +16,12 @@ module.exports = () => {
       // 从 error 对象上读出各个属性，设置到响应中
       ctx.body = { error };
       if (status === 422) {
-        ctx.body.detail = err.errors;
+        // ctx.body.detail = err.errors;
+        ctx.body = {
+          success: false,
+          message: '参数校验失败',
+          data: err.errors
+        }
       }
       ctx.status = status;
     }
