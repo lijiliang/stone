@@ -4,6 +4,7 @@
   "description": "",
   "private": true,
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "egg": "^2.14.2",
     "egg-mysql": "^3.0.0",
     "egg-router-plus": "^1.3.0",

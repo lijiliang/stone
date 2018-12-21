@@ -20,12 +20,17 @@ class UserService extends Service {
 
     return false;
   }
+
   /*
    * 注册
    * @param {Object} registerParams 用户注册的信息 {password, username, email, mobile}
    */
   async register(registerParams) {
     const { ctx } = this;
+
+    // 密码转hash
+    registerParams.password = ctx.helper.createPasswordHash(registerParams.password);
+
     // 添加uuid
     registerParams.userid = uuidv4().replace(/-/g, '');
 
@@ -41,10 +46,12 @@ class UserService extends Service {
 
     const userInfo = await ctx.model.User.create(registerParams);
 
-    // 注册成功，返回userid给前端
+    // 注册成功，返回成功后的数据给前端
     ctx.status = 200;
     ctx.returnBody(200, '注册成功', {
       userId: userInfo.dataValues.userid,
+      username: userInfo.dataValues.username,
+      email: userInfo.dataValues.email,
       flag: true,
     });
 
