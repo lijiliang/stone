@@ -6,8 +6,13 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1545294654973_2137';
 
-  // add your config here
-  config.middleware = [];
+  // 加载 s中间件
+  config.middleware = [ 'errorHandler' ],
+
+  // 只对 /api 前缀的 url 路径生效
+  config.errorHandler = {
+    match: '/api',
+  },
 
   // 配置session
   config.session = {
@@ -32,6 +37,22 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
+  };
+
+  config.validator = {
+    open: async ctx => 'zh-CN',
+    // or
+    // open: 'zh-CN',
+    languages: {
+      'zh-CN': {
+        required: '%s 必填'
+      }
+    },
+    async formatter(ctx, error) {
+      ctx.type = 'json';
+      ctx.status = 400;
+      ctx.body = error;
+    }
   };
 
   return config;

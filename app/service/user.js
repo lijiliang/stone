@@ -27,13 +27,10 @@ class UserService extends Service {
    */
   async register(registerParams) {
     const { ctx } = this;
-
     // 密码转hash
     registerParams.password = ctx.helper.createPasswordHash(registerParams.password);
-
     // 添加uuid
     registerParams.userid = uuidv4().replace(/-/g, '');
-
     // 是否可以查询到
     const queryResult = await this._hasRegister(registerParams.email);
     if (queryResult) {
@@ -45,7 +42,6 @@ class UserService extends Service {
     }
 
     const userInfo = await ctx.model.User.create(registerParams);
-
     // 注册成功，返回成功后的数据给前端
     ctx.status = 200;
     ctx.returnBody(200, '注册成功', {

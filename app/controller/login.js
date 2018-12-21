@@ -2,6 +2,14 @@
 
 const Controller = require('egg').Controller;
 
+// 定义创建接口的请求参数规则
+const createRule = {
+  password: 'string',
+  username: { type: 'string', required: true, message: '用户名不能为空' },
+  email: { type: 'email', required: true, message: '邮箱不正确' },
+  mobile: { type: 'string', format: /\d+/, message: '手机号不正确' },
+};
+
 class LoginController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -33,6 +41,9 @@ class LoginController extends Controller {
     const ctx = this.ctx;
     const { password, username, email, mobile } = ctx.request.body;
 
+    // 校验 `ctx.request.body` 是否符合我们预期的格式
+    // 如果参数校验未通过，将会抛出一个 status = 422 的异常
+    ctx.validate(createRule, ctx.request.body);
     // 错误处理
     if (!this.__errNotice()) return;
 
