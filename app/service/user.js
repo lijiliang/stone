@@ -53,6 +53,32 @@ class UserService extends Service {
 
     return userInfo.dataValues;
   }
+
+  /*
+   * 登录
+   * @param {Object} loginParams   {password, email, mobile}
+   */
+  async login(loginParams) {
+    const { app, ctx } = this;
+    const existUser = await this.getUserByMail(loginParams.email);
+
+    // 用户不存在
+    if (!existUser) {
+      return;
+    }
+
+    const { password } = loginParams;
+    console.log(ctx.helper.hasPasswordHash(password, existUser.password));
+    const equal = ctx.helper.hasPasswordHash(password, existUser.password);
+    // 密码不匹配
+    if (!equal) {
+      return false;
+    }
+
+    // 验证通过
+    return 'token';
+
+  }
   /*
    * 根据userId查找用户
    * @param {String} userId 用户Id
@@ -62,6 +88,18 @@ class UserService extends Service {
     const query = { userId };
     return this.ctx.model.User.findOne({
       where: query,
+    });
+  }
+  /*
+  * 根据邮箱，查找用户
+  * @param {String} email 邮箱地址
+  * @return {Promise[user]} 承载用户的 Promise 对象
+  */
+  async getUserByMail(email) {
+    return this.ctx.model.User.findOne({
+      where: {
+        email,
+      },
     });
   }
 }

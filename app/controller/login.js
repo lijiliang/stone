@@ -45,6 +45,19 @@ class LoginController extends Controller {
     // 注册成功返回体
     await ctx.service.user.register({ password, username, email, mobile });
   }
+
+  // 登录
+  async loginIn() {
+    const { ctx } = this;
+    const { password, email, mobile } = ctx.request.body;
+    const token = await ctx.service.user.login({ password, email, mobile });
+
+    if (token) {
+      ctx.returnBody(200, '登录成功');
+    } else {
+      ctx.throw(400, '用户名或密码错误');
+    }
+  }
 }
 
 module.exports = LoginController;

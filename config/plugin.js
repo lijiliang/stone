@@ -27,3 +27,8 @@ exports.validator = {
   enable: true,
   package: 'egg-y-validator'
 };
+
+exports.jwt = {
+  enable: true,
+  package: 'egg-jwt',
+}

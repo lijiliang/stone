@@ -7,10 +7,10 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1545294654973_2137';
 
   // 加载 s中间件
-  config.middleware = [ 'errorHandler' ],
+  config.middleware = [ 'errorApiHandler' ],
 
   // 只对 /api 前缀的 url 路径生效
-  config.errorHandler = {
+  config.errorApiHandler = {
     match: '/api',
   },
 
@@ -54,6 +54,12 @@ module.exports = appInfo => {
       ctx.body = error;
     }
   };
+
+  config.jwt = {
+    secret: 'Stone-M',
+    enable: true, // default is false
+    match: '/jwt', // optional
+  }
 
   return config;
 };
