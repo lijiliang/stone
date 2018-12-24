@@ -6,6 +6,9 @@ const regrule = require('../utils/regrule');
 class UserAccessController extends Controller {
   constructor(ctx) {
     super(ctx)
+
+    // 定义注册的请求参数规则
+    // https://github.com/node-modules/parameter
     this.registerParamRule = {
       password: { type: 'string', format: regrule.regPassword, required: true, message: '密码不正确' },
       username: { type: 'string', required: true, message: '用户名不能为空' },

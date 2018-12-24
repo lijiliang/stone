@@ -1,93 +1,47 @@
 'use strict';
 
 const Service = require('egg').Service;
-const uuidv4 = require('uuid/v4');
-const sd = require('silly-datetime');
+
+function toInt(str) {
+  if (typeof str === 'number') return str;
+  if (!str) return str;
+  return parseInt(str, 10) || 0;
+}
 
 class UserService extends Service {
 
-  /*
-   * 查询邮箱是否已经注册 私有方法
-   * @param {String} email 邮箱
-   */
-  async _hasRegister(email) {
-    // 查询用户名
-    const user = await this.ctx.model.User.findOne({
-      where: { email },
-    });
-    if (user && user.dataValues.userid) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /*
-   * 注册
-   * @param {Object} registerParams 用户注册的信息 {password, username, email, mobile}
-   */
-  async register(registerParams) {
+  // 获取所有用户
+  async index() {
+    // 当前页数：current; 每页条数：pageSize;  总数：total;  
     const { ctx } = this;
-    // 密码转hash
-    registerParams.password = ctx.helper.createPasswordHash(registerParams.password);
-    // 添加uuid
-    registerParams.userid = uuidv4().replace(/-/g, '');
-    // 是否可以查询到
-    const queryResult = await this._hasRegister(registerParams.email);
-    if (queryResult) {
-      ctx.returnBody(200, '邮箱已被使用', {
-        message: '邮箱已被使用',
-        flag: false,
-      });
-      return;
-    }
+    const { current, pageSize, userType } = ctx.query;
+    let _current = current ? current : 1; // 当前页数
+    let _pageSize = pageSize ? pageSize : 10;  // 每页条数
+    let _userType = userType; // 用户类型，1:admin ;2:会员
+    let _offset = ((Number(_current)) - 1) * Number(_pageSize || 10) // 偏移量
 
-    const userInfo = await ctx.model.User.create(registerParams);
-    // 注册成功，返回成功后的数据给前端
-    ctx.status = 200;
-    ctx.returnBody(200, '注册成功', {
-      userId: userInfo.dataValues.userid,
-      username: userInfo.dataValues.username,
-      email: userInfo.dataValues.email,
-      flag: true,
-    });
+    const query = {
+      limit: toInt(_pageSize), //条数限制
+      offset: toInt(_offset), //起始位置 从0开始
+    };
 
-    return userInfo.dataValues;
-  }
-
-  /*
-   * 登录
-   * @param {Object} loginParams   {password, email, mobile}
-   */
-  async login(loginParams) {
-    const { app, ctx } = this;
-    const existUser = await this.getUserByMail(loginParams.email);
-
-    // 用户不存在
-    if (!existUser) {
-      return;
-    }
-
-    const { password } = loginParams;
-    const equal = ctx.helper.hasPasswordHash(password, existUser.password);
-    // 密码不匹配
-    if (!equal) {
-      return false;
-    }
-
-    // 登录时更新数据表信息
-    existUser.update(
-      {
-        last_login_ip: ctx.ip ? ctx.ip : '127.0.0.1', // 最后登录 ip
-        last_login_time: sd.format(new Date(), 'YYYY-MM-DD HH:mm'), // 最后登录时间
+    // 如果有用户类型
+    if (_userType) {
+      query.where = {
+        user_type: _userType
       }
-    );
-
-    // 验证通过
-    // 生成Token令牌
-    return { token: await ctx.service.actionToken.apply(existUser.userid) };
-
+    }
+  
+    const user = await ctx.model.User.findAndCountAll(query);
+    const _data = {
+      total: user.count,
+      curent: toInt(_current),
+      pageSize: toInt(_pageSize),
+      list: user.rows
+    }
+    return _data;
   }
+  
   /*
    * 根据userId查找用户
    * @param {String} userId 用户Id

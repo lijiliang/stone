@@ -16,6 +16,13 @@ class UserController extends Controller {
     };
     ctx.returnBody(200, '获取成功', userInfo);
   }
+
+  // 获取所有用户(分页/模糊)
+  async index() {
+    const ctx = this.ctx;
+    const res = await ctx.service.user.index();
+    ctx.returnBody(200, '用户列表数据', res)
+  }
 }
 
 module.exports = UserController;
