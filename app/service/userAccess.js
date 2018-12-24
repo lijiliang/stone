@@ -1,0 +1,143 @@
+'use strict';
+
+const Service = require('egg').Service;
+const sd = require('silly-datetime');
+
+class UserAccessService extends Service {
+  constructor(ctx) {
+    super(ctx)
+  }
+  /*
+  * 根据邮箱，查找用户
+  * @param {String} email 邮箱地址
+  * @return {Promise[user]} 承载用户的 Promise 对象
+  */
+  async getUserByMail(email) {
+    return this.ctx.model.User.findOne({
+      where: {
+        email,
+      },
+    });
+  }
+
+  /*
+   * 根据userId查找用户
+   * @param {String} userId 用户Id
+   * @return {Promise[user]} 承载用户的 Promise 对象
+   */
+  async getUserByUserId(userId) {
+    return this.ctx.model.User.findOne({
+      where: {
+        userId
+      },
+    });
+  }
+
+  // 用户登录
+  async login(payload) {
+    const { app, ctx } = this;
+    const existUser = await this.getUserByMail(payload.email);
+
+    // 用户不存在
+    if (!existUser) {
+      return;
+    }
+
+    const { password } = payload;
+    const equal = ctx.helper.hasPasswordHash(password, existUser.password);
+    // 密码不匹配
+    if (!equal) {
+      return false;
+    }
+
+    // 登录时更新数据表信息
+    existUser.update(
+      {
+        last_login_ip: ctx.ip ? ctx.ip : '127.0.0.1', // 最后登录 ip
+        last_login_time: sd.format(new Date(), 'YYYY-MM-DD HH:mm'), // 最后登录时间
+      }
+    );
+
+    // 验证通过
+    // 生成Token令牌
+    return { token: await ctx.service.actionToken.apply(existUser.userid) };
+  }
+
+  // 用户登出
+  async logout() {
+    // 登出现在不做处理，在前端清除token
+  }
+
+  // 获取用户信息
+  async current() {
+    const { ctx } = this;
+    // ctx.state.user 可以提取到JWT编码的data
+    const _userid = ctx.state.user.data.userid;
+
+    // const authorization = ctx.get('Authorization');
+    // if (authorization === '') { // 判断请求头有没有携带 token ,没有直接返回 401
+    //   ctx.throw(401, 'no token detected in http header "Authorization"');
+    // }
+    // const token = authorization.split(' ')[1];
+
+    const user = await this.getUserByUserId(_userid);
+
+    if (!user) {
+      ctx.throw(422, '用户不存在');
+    }
+    // 返回过滤后的信息
+    const { userid, username, email, avatar, mobile, sex, state, last_login_ip, last_login_time } = user
+    const userInfo = {
+      userid, 
+      username, 
+      email, 
+      avatar,
+      mobile,
+      sex, 
+      state,
+      last_login_ip,
+      last_login_time
+    }
+    return userInfo;
+  }
+
+  // 修改密码
+  async resetPsw(payload) {
+    const { ctx } = this;
+    const existUser = await this.getUserByMail(payload.email);
+    // 用户不存在
+    if (!existUser) {
+      return;
+    }
+
+    const { oldpassword, newpassword } = payload;
+    // 对比旧密码
+    const equal = ctx.helper.hasPasswordHash(oldpassword, existUser.password);
+    // 密码不匹配
+    if (!equal) {
+      ctx.throw(422, '旧密码不正确');
+    }
+
+    // 新密码转hash
+    const newPasswordHash = ctx.helper.createPasswordHash(newpassword);
+    existUser.update({
+        password: newPasswordHash
+    });
+
+    return {
+      flag: true
+    }
+  }
+
+  // 修改基础信息
+  async resetSelf() {
+
+  }
+
+  // 修改头像
+  async resetAvatar() {
+
+  }
+}
+
+module.exports = UserAccessService;
