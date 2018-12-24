@@ -53,10 +53,24 @@ class LoginController extends Controller {
     const token = await ctx.service.user.login({ password, email, mobile });
 
     if (token) {
-      ctx.returnBody(200, '登录成功');
+      ctx.returnBody(200, '登录成功', token);
     } else {
-      ctx.throw(400, '用户名或密码错误');
+      ctx.throw(422, '用户名或密码错误');
+      // ctx.returnBody(200, '用户名或密码错误', {}, false);
     }
+  }
+  async current() {
+    const { ctx } = this;
+    // ctx.state.user 可以提取到JWT编码的data
+    const _userid = ctx.state.user.data.userid;
+    const user = await ctx.service.user.getUserByUserId(_userid);
+
+    if (!user) {
+      ctx.throw(422, '用户不存在');
+    }
+    user.password = 'How old are you?';
+
+    ctx.returnBody(200, '登录成功', user);
   }
 }
 

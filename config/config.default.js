@@ -56,7 +56,7 @@ module.exports = appInfo => {
   };
 
   config.jwt = {
-    secret: 'Stone-M',
+    secret: 'Stone',
     enable: true, // default is false
     match: '/jwt', // optional
   }

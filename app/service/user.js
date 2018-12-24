@@ -76,7 +76,8 @@ class UserService extends Service {
     }
 
     // 验证通过
-    return 'token';
+    // 生成Token令牌
+    return { token: await ctx.service.actionToken.apply(existUser.userid) };
 
   }
   /*

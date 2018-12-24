@@ -11,5 +11,6 @@ module.exports = app => {
   router.get('/', controller.home.index);
 
   apiV1Router.post('/login/register', login.register) // 注册
-  apiV1Router.post('/login', login.loginIn); // 登录
+  apiV1Router.post('/login', login.loginIn); // 登录,
+  apiV1Router.get('/current', app.jwt, login.current)
 };
