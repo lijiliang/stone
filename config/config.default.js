@@ -6,6 +6,7 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1545294654973_2137';
 
+  config.proxy = true
   // 加载 s中间件
   config.middleware = [ 'errorApiHandler' ],
 
@@ -31,6 +32,7 @@ module.exports = appInfo => {
     password: 'Q1234567890',
     database: 'stone_instagram',
     // operatorsAliases: false,
+    timezone: '+08:00' //东八时区
   };
 
   config.security = {

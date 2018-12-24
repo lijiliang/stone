@@ -14,6 +14,7 @@
     "egg-validate": "^2.0.2",
     "egg-y-validator": "^1.2.0",
     "mysql2": "^1.6.4",
+    "silly-datetime": "^0.1.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

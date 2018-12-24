@@ -2,6 +2,7 @@
 
 const Service = require('egg').Service;
 const uuidv4 = require('uuid/v4');
+const sd = require('silly-datetime');
 
 class UserService extends Service {
 
@@ -68,12 +69,19 @@ class UserService extends Service {
     }
 
     const { password } = loginParams;
-    console.log(ctx.helper.hasPasswordHash(password, existUser.password));
     const equal = ctx.helper.hasPasswordHash(password, existUser.password);
     // 密码不匹配
     if (!equal) {
       return false;
     }
+
+    // 登录时更新数据表信息
+    existUser.update(
+      {
+        last_login_ip: ctx.ip ? ctx.ip : '127.0.0.1', // 最后登录 ip
+        last_login_time: sd.format(new Date(), 'YYYY-MM-DD HH:mm'), // 最后登录时间
+      }
+    );
 
     // 验证通过
     // 生成Token令牌

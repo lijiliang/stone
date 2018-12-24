@@ -59,6 +59,7 @@ class LoginController extends Controller {
       // ctx.returnBody(200, '用户名或密码错误', {}, false);
     }
   }
+  // 获取当前用户信息
   async current() {
     const { ctx } = this;
     // ctx.state.user 可以提取到JWT编码的data
