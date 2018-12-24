@@ -6,12 +6,52 @@ const regrule = require('../utils/regrule');
 class UserAccessController extends Controller {
   constructor(ctx) {
     super(ctx)
-
+    this.registerParamRule = {
+      password: { type: 'string', format: regrule.regPassword, required: true, message: '密码不正确' },
+      username: { type: 'string', required: true, message: '用户名不能为空' },
+      email: { type: 'email', required: true, message: '邮箱不正确' },
+      mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
+    };
+  
     this.resetPswRule = {
       email: { type: 'email', required: true, message: '邮箱不正确' },
       oldpassword: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
       newpassword: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
     }
+  }
+  // 注册
+  async register() {
+    const ctx = this.ctx;
+    const { password, username, email, mobile } = ctx.request.body;
+
+    // 校验 `ctx.request.body` 是否符合我们预期的格式
+    // 如果参数校验未通过，将会抛出一个 status = 422 的异常
+    ctx.validate(this.registerParamRule, ctx.request.body);
+
+    // 以下两种方法都可以获取到参数检验未通过的错误信息，并重组显示到body中
+    // const paramErrors = this.app.validator.validate(registerParamRule, ctx.request.body);
+    // if (paramErrors && paramErrors.length) {
+    //   ctx.logger.warn(paramErrors);
+    //   ctx.returnBody(200, '参数校验失败', paramErrors, false);
+    //   return;
+    // }
+
+    // try {
+    //   ctx.validate(registerParamRule, ctx.request.body);
+    // } catch (err) {
+    //   ctx.logger.warn(err.errors);
+
+    //   ctx.body = {
+    //     success: false,
+    //     message: '参数校验失败',
+    //     data: err };
+    //   return;
+    // }
+
+    // 注册成功返回体
+    const res = await ctx.service.userAccess.register({ password, username, email, mobile });
+    // 设置响应内容和响应状态码
+    ctx.returnBody(200, '注册成功', res)
   }
 
   // 用户登录

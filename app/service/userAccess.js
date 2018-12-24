@@ -1,11 +1,27 @@
 'use strict';
 
 const Service = require('egg').Service;
+const uuidv4 = require('uuid/v4');
 const sd = require('silly-datetime');
 
 class UserAccessService extends Service {
   constructor(ctx) {
     super(ctx)
+  }
+  /*
+   * 查询邮箱是否已经注册 私有方法
+   * @param {String} email 邮箱
+   */
+  async _hasRegister(email) {
+    // 查询用户名
+    const user = await this.ctx.model.User.findOne({
+      where: { email },
+    });
+    if (user && user.dataValues.userid) {
+      return true;
+    }
+
+    return false;
   }
   /*
   * 根据邮箱，查找用户
@@ -31,6 +47,35 @@ class UserAccessService extends Service {
         userId
       },
     });
+  }
+
+  // 注册
+  async register(payload) {
+    const { ctx } = this;
+    // 密码转hash
+    payload.password = ctx.helper.createPasswordHash(payload.password);
+    // 添加uuid
+    payload.userid = uuidv4().replace(/-/g, '');
+    // 查看邮箱是否已经注册
+    const queryResult = await this._hasRegister(payload.email);
+
+    if (queryResult) {
+      ctx.throw(422, '邮箱已被使用');
+      // ctx.returnBody(200, '邮箱已被使用', {
+      //   message: '邮箱已被使用',
+      //   flag: false,
+      // });
+      // return;
+    }
+    const userInfo = await ctx.model.User.create(payload);
+    const _data = {
+      userId: userInfo.dataValues.userid,
+      username: userInfo.dataValues.username,
+      email: userInfo.dataValues.email,
+      flag: true,
+    }
+    // 注册成功，返回成功后的数据
+    return _data
   }
 
   // 用户登录
@@ -113,7 +158,7 @@ class UserAccessService extends Service {
     // ctx.state.user 可以提取到JWT编码的data
     const _userid = ctx.state.user.data.userid;
     const existUser = await this.getUserByUserId(_userid); // 根据JWT传过来的userid
-    console.log(existUser.userid)
+
     if (!existUser) {
       ctx.throw(422, '用户不存在');
     }
