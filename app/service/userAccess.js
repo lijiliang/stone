@@ -104,10 +104,18 @@ class UserAccessService extends Service {
   // 修改密码
   async resetPsw(payload) {
     const { ctx } = this;
-    const existUser = await this.getUserByMail(payload.email);
-    // 用户不存在
+    // const existUser = await this.getUserByMail(payload.email);  // 根据邮箱
+    // // 用户不存在
+    // if (!existUser) {
+    //   return;
+    // }
+
+    // ctx.state.user 可以提取到JWT编码的data
+    const _userid = ctx.state.user.data.userid;
+    const existUser = await this.getUserByUserId(_userid); // 根据JWT传过来的userid
+    console.log(existUser.userid)
     if (!existUser) {
-      return;
+      ctx.throw(422, '用户不存在');
     }
 
     const { oldpassword, newpassword } = payload;
