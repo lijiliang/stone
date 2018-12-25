@@ -76,7 +76,7 @@ class UserAccessService extends Service {
 
   // 用户登录
   async login(payload) {
-    const { app, ctx } = this;
+    const { ctx } = this;
     const existUser = await this.getUserByMail(payload.email);
 
     // 用户不存在
@@ -91,13 +91,24 @@ class UserAccessService extends Service {
       return false;
     }
 
+    const _ip = ctx.ip ? ctx.ip : '127.0.0.1';
+    const _time = this.ctx.helper.formatTime(new Date());
+
     // 登录时更新数据表信息
     existUser.update(
       {
-        last_login_ip: ctx.ip ? ctx.ip : '127.0.0.1', // 最后登录 ip
-        last_login_time: this.ctx.helper.formatTime(new Date()), // 最后登录时间
+        last_login_ip: _ip, // 最后登录 ip
+        last_login_time: _time, // 最后登录时间
       }
     );
+
+    // 插入一条登录记录到日志数据库
+    await ctx.model.Logs.create({
+      username: existUser.username,
+      content: '登录成功',
+      last_login_ip: _ip, // 最后登录 ip
+      last_login_time: _time, // 最后登录时间
+    });
 
     // 验证通过
     // 生成Token令牌

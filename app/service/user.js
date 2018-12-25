@@ -1,7 +1,6 @@
 'use strict';
 
 const Service = require('egg').Service;
-const sd = require('silly-datetime');
 
 function toInt(str) {
   if (typeof str === 'number') return str;
