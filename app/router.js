@@ -24,5 +24,5 @@ module.exports = app => {
   // router.get('/api/user/:id', controller.user.show)
   // router.get('/api/user', controller.user.index)
   // router.delete('/api/user', controller.user.removes)
-  router.resources('user', '/api/v1/user', controller.user);
+  router.resources('user', '/api/v1/user', app.jwt, controller.user);
 };

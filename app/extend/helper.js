@@ -1,6 +1,7 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const sd = require('silly-datetime');
+const uuidv4 = require('uuid/v4');
 
 module.exports = {
   /**
@@ -28,6 +29,10 @@ module.exports = {
       return null;
     }
     return sd.format(time, 'YYYY-MM-DD HH:mm:ss');
+  },
+  // 生成uuid
+  uuid() {
+    return uuidv4().replace(/-/g, '');
   },
 }
 ;

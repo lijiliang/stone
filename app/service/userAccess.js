@@ -1,7 +1,6 @@
 'use strict';
 
 const Service = require('egg').Service;
-const uuidv4 = require('uuid/v4');
 
 class UserAccessService extends Service {
   /*
@@ -51,7 +50,7 @@ class UserAccessService extends Service {
     // 密码转hash
     payload.password = ctx.helper.createPasswordHash(payload.password);
     // 添加uuid
-    payload.userid = uuidv4().replace(/-/g, '');
+    payload.userid = ctx.helper.uuid(); // uuidv4().replace(/-/g, '');
     // 查看邮箱是否已经注册
     const queryResult = await this._hasRegister(payload.email);
 
@@ -92,7 +91,7 @@ class UserAccessService extends Service {
     }
 
     const _ip = ctx.ip ? ctx.ip : '127.0.0.1';
-    const _time = this.ctx.helper.formatTime(new Date());
+    const _time = ctx.helper.formatTime(new Date());
 
     // 登录时更新数据表信息
     existUser.update(
