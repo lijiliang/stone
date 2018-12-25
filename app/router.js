@@ -5,7 +5,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { login, userAccess } = controller;
+  const { userAccess } = controller;
   const apiV1Router = app.router.namespace('/api/v1');
 
   router.get('/', controller.home.index);
@@ -23,6 +23,6 @@ module.exports = app => {
   // router.put('/api/user/:id', controller.user.update)
   // router.get('/api/user/:id', controller.user.show)
   // router.get('/api/user', controller.user.index)
-  // router.delete('/api/user', controller.user.removes)
+  router.delete('/api/v1/user', controller.user.removes); // 同时删除多个用户
   router.resources('user', '/api/v1/user', app.jwt, controller.user);
 };

@@ -141,12 +141,10 @@ class UserService extends Service {
   // 修改用户
   async update(userid, payload) {
     const { ctx } = this;
-
     const existUser = await this.getUserByUserId(userid);
     if (!existUser) {
       ctx.throw(422, '用户不存在');
     }
-
     // 验证邮箱
     if (existUser.email !== payload.email) {
       const existUserEmail = await this._hasRegister(payload.email);
@@ -154,10 +152,8 @@ class UserService extends Service {
         ctx.throw(422, '邮箱已被使用');
       }
     }
-
     // 密码转hash
     payload.password = ctx.helper.createPasswordHash(payload.password);
-
     // 更新数据
     const updateUser = await existUser.update(payload);
     return {
@@ -180,9 +176,23 @@ class UserService extends Service {
     };
   }
 
-  // 删除所选用户(条件id[])
-  async removes() {
-    const { ctx } = this;
+  // 删除所选用户(条件ids[])
+  async removes(ids) {
+    const { ctx, app } = this;
+    const { Op } = app.Sequelize;
+
+    // 删除多条
+    const user = await ctx.model.User.destroy({
+      where: {
+        userid: {
+          [Op.in]: ids,
+        },
+      },
+    });
+
+    return {
+      count: user || 0,
+    };
   }
 }
 
