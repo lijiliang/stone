@@ -14,17 +14,17 @@ module.exports = () => {
         : err.message;
 
       // 从 error 对象上读出各个属性，设置到响应中
-      ctx.body = { 
+      ctx.body = {
         code: status, // 服务端自身的处理逻辑错误(包含框架错误500 及 自定义业务逻辑错误533开始 ) 客户端请求参数导致的错误(4xx开始)，设置不同的状态码
-        error 
+        error,
       };
       if (status === 422) {
         // ctx.body.detail = err.errors;
         ctx.body = {
           success: false,
           message: err.message === 'Validation Failed' ? '参数校验失败' : err.message,
-          data: err.errors
-        }
+          data: err.errors,
+        };
       }
       ctx.status = status;
     }

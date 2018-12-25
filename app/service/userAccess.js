@@ -2,12 +2,8 @@
 
 const Service = require('egg').Service;
 const uuidv4 = require('uuid/v4');
-const sd = require('silly-datetime');
 
 class UserAccessService extends Service {
-  constructor(ctx) {
-    super(ctx)
-  }
   /*
    * 查询邮箱是否已经注册 私有方法
    * @param {String} email 邮箱
@@ -44,7 +40,7 @@ class UserAccessService extends Service {
   async getUserByUserId(userId) {
     return this.ctx.model.User.findOne({
       where: {
-        userId
+        userId,
       },
     });
   }
@@ -73,9 +69,9 @@ class UserAccessService extends Service {
       username: userInfo.dataValues.username,
       email: userInfo.dataValues.email,
       flag: true,
-    }
+    };
     // 注册成功，返回成功后的数据
-    return _data
+    return _data;
   }
 
   // 用户登录
@@ -99,7 +95,7 @@ class UserAccessService extends Service {
     existUser.update(
       {
         last_login_ip: ctx.ip ? ctx.ip : '127.0.0.1', // 最后登录 ip
-        last_login_time: sd.format(new Date(), 'YYYY-MM-DD HH:mm'), // 最后登录时间
+        last_login_time: this.ctx.helper.formatTime(new Date()), // 最后登录时间
       }
     );
 
@@ -131,18 +127,18 @@ class UserAccessService extends Service {
       ctx.throw(422, '用户不存在');
     }
     // 返回过滤后的信息
-    const { userid, username, email, avatar, mobile, sex, state, last_login_ip, last_login_time } = user
+    const { userid, username, email, avatar, mobile, sex, state, last_login_ip, last_login_time } = user;
     const userInfo = {
-      userid, 
-      username, 
-      email, 
+      userid,
+      username,
+      email,
       avatar,
       mobile,
-      sex, 
+      sex,
       state,
       last_login_ip,
-      last_login_time
-    }
+      last_login_time,
+    };
     return userInfo;
   }
 
@@ -174,12 +170,12 @@ class UserAccessService extends Service {
     // 新密码转hash
     const newPasswordHash = ctx.helper.createPasswordHash(newpassword);
     existUser.update({
-        password: newPasswordHash
+      password: newPasswordHash,
     });
 
     return {
-      flag: true
-    }
+      flag: true,
+    };
   }
 
   // 修改基础信息

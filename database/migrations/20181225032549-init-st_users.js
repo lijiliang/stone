@@ -4,7 +4,7 @@ module.exports = {
   // 在执行数据库升级时调用的函数，创建 users 表
   up: async (queryInterface, Sequelize) => {
     const { INTEGER, DATE, STRING } = Sequelize;
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('st_users', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true }, // 记录Id
       userid: { type: STRING(100) }, // 用户Id
       username: { type: STRING(60), allowNull: false }, // 用户名
@@ -26,8 +26,8 @@ module.exports = {
       comment: '用户表',
     });
   },
-  // 在执行数据库降级时调用的函数，删除 users 表
+  // 在执行数据库降级时调用的函数，删除 st_users 表
   down: async queryInterface => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('st_users');
   },
 };

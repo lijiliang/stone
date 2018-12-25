@@ -1,6 +1,6 @@
 'use strict';
-
 const bcrypt = require('bcryptjs');
+const sd = require('silly-datetime');
 
 module.exports = {
   /**
@@ -13,7 +13,7 @@ module.exports = {
     const hash = bcrypt.hashSync(password, salt);
     return hash;
   },
-  /**
+  /*
    * 判断密码与hash是否对应
    * @param {String} password 密码
    * @param {String} hash 加密后的hash
@@ -21,5 +21,13 @@ module.exports = {
   hasPasswordHash(password, hash) {
     const hasPassword = bcrypt.compareSync(password, hash);
     return hasPassword;
-  }
+  },
+  // 格式化时间
+  formatTime(time) {
+    if (!time) {
+      return null;
+    }
+    return sd.format(time, 'YYYY-MM-DD HH:mm:ss');
+  },
 }
+;

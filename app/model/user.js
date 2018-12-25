@@ -1,8 +1,15 @@
+/*
+ * @Author: Benson
+ * @Date: 2018-12-20 17:36:17
+ * @LastEditors: Benson
+ * @LastEditTime: 2018-12-25 11:48:59
+ * @Description: 用户管理模型
+ */
 'use strict';
 
 module.exports = app => {
   const { STRING, INTEGER, DATE, NOW } = app.Sequelize;
-  const User = app.model.define('users', {
+  const User = app.model.define('st_users', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true }, // 记录Id
     userid: { type: STRING(100) }, // 用户Id
     username: { type: STRING(60), allowNull: false }, // 用户名
@@ -16,7 +23,7 @@ module.exports = app => {
       defaultValue: '2', // 默认值
     },
     user_type: { type: STRING(2), defaultValue: '2' }, // 用户类型，1:admin ;2:会员
-    last_login_ip: {type: STRING(50)}, // 最后登录ip
+    last_login_ip: { type: STRING(50) }, // 最后登录ip
     last_login_time: { type: DATE }, // 最后登录时间
     created_at: { type: DATE, defaultValue: NOW }, // 创建时间
     updated_at: { type: DATE, defaultValue: NOW }, // 更新时间

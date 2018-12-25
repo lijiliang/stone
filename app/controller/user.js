@@ -21,7 +21,7 @@ class UserController extends Controller {
   async index() {
     const ctx = this.ctx;
     const res = await ctx.service.user.index();
-    ctx.returnBody(200, '用户列表数据', res)
+    ctx.returnBody(200, '用户列表数据', res);
   }
 }
 

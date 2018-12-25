@@ -5,7 +5,7 @@ const regrule = require('../utils/regrule');
 
 class UserAccessController extends Controller {
   constructor(ctx) {
-    super(ctx)
+    super(ctx);
 
     // 定义注册的请求参数规则
     // https://github.com/node-modules/parameter
@@ -15,12 +15,12 @@ class UserAccessController extends Controller {
       email: { type: 'email', required: true, message: '邮箱不正确' },
       mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
     };
-  
+
     this.resetPswRule = {
       email: { type: 'email', required: true, message: '邮箱不正确' },
       oldpassword: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
       newpassword: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
-    }
+    };
   }
   // 注册
   async register() {
@@ -54,7 +54,7 @@ class UserAccessController extends Controller {
     // 注册成功返回体
     const res = await ctx.service.userAccess.register({ password, username, email, mobile });
     // 设置响应内容和响应状态码
-    ctx.returnBody(200, '注册成功', res)
+    ctx.returnBody(200, '注册成功', res);
   }
 
   // 用户登录
@@ -73,9 +73,9 @@ class UserAccessController extends Controller {
 
   // 用户登出
   async logout() {
-    const { ctx } = this
+    const { ctx } = this;
     // 调用 Service 进行业务处理
-    await ctx.service.userAccess.logout()
+    await ctx.service.userAccess.logout();
     // ctx.cookies.set(this.config.auth_cookie_name, ""); // cookie 有效期30天
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '登出成功', {});
@@ -91,13 +91,13 @@ class UserAccessController extends Controller {
 
   // 修改密码
   async resetPsw() {
-    const { ctx, service } = this
+    const { ctx, service } = this;
     // 组装参数
-    const payload = ctx.request.body || {}
+    const payload = ctx.request.body || {};
     // 校验参数
     ctx.validate(this.resetPswRule, ctx.request.body);
     // 调用 Service 进行业务处理
-    const res = await service.userAccess.resetPsw(payload)
+    const res = await service.userAccess.resetPsw(payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '修改密码成功', res);
   }
@@ -109,7 +109,7 @@ class UserAccessController extends Controller {
 
   // 修改头像
   async resetAvatar() {
-    
+
   }
 }
 
