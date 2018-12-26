@@ -55,6 +55,7 @@ class UserService extends Service {
 
   // 获取所有用户
   async index() {
+
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
     const { current, pageSize, userType } = ctx.query;

@@ -93,15 +93,7 @@ class UserController extends Controller {
     // 调用 Service 进行业务处理
     const res = await service.user.removes(_ids);
     // 设置响应内容和响应状态
-    const { count } = res;
-
-    if (count === 0) {
-      ctx.returnBody(200, '没有可删除的用户');
-      return;
-    }
-    ctx.returnBody(200, '操作成功', {
-      count,
-    });
+    ctx.returnBody(200, '操作成功', res);
 
   }
 }
