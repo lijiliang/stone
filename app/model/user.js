@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-20 17:36:17
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 15:02:22
+ * @LastEditTime: 2018-12-26 18:24:06
  * @Description: 用户管理模型
  */
 'use strict';
@@ -15,7 +15,7 @@ module.exports = app => {
     username: { type: STRING(60), allowNull: false }, // 用户名
     email: { type: STRING(100), allowNull: false, isEmail: true }, // email 地址
     password: { type: STRING(255), allowNull: false }, // 密码
-    avatar: { type: STRING(256), defaultValue: 'https://s11.mogucdn.com/mlcdn/c45406/181105_60bdj928jdhjg9ehhg58hje1212ek_640x640.jpg' }, // 头像
+    avatar: { type: STRING(256), defaultValue: 'https://avatars1.githubusercontent.com/u/11495223?s=460&v=4' }, // 头像
     mobile: STRING(32), // 手机号
     sex: { type: INTEGER, defaultValue: 0 }, // 性别 0：未知；1:男性; 2:女性
     state: { // 用户状态 0：禁用； 1：正常 ；2：未验证
