@@ -31,4 +31,7 @@ module.exports = app => {
   router.delete('/api/v1/sensitive', controller.sensitive.removes); // 同时删除多个敏感词
   router.resources('sensitive', '/api/v1/sensitive', controller.sensitive);
 
+  // logs 登录日志
+  apiV1Router.get('/logs', app.jwt, controller.logs.index);
+
 };
