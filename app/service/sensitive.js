@@ -36,6 +36,7 @@ class SensitiveService extends Service {
       },
     };
 
+    // 查询并返回总数
     const sensitive = await ctx.model.Sensitive.findAndCountAll(query);
 
     // 返回整理后的数据
@@ -56,12 +57,71 @@ class SensitiveService extends Service {
   // 创建敏感词
   async create(payload) {
     const { ctx } = this;
-    payload.type_typeid = payload.typeid;
     const sensitive = await ctx.model.Sensitive.create(payload);
     return {
       typeid: sensitive.typeid,
       content: sensitive.content,
-      type_typeid: sensitive.type_typeid,
+    };
+  }
+
+  // 获取单个
+  async show(id) {
+    const { ctx } = this;
+    // await ctx.model.Sensitive.findById(id);
+    const query = {
+      where: { id },
+      attributes: this.attributes,
+      include: {
+        model: this.ctx.model.SensitiveType,
+        as: 'type',
+        attributes: [ 'typename' ],
+      },
+    };
+    const res = await ctx.model.Sensitive.findOne(query);
+    return res;
+  }
+
+  // 更新
+  async update(id, payload) {
+    const { ctx } = this;
+    const sensitive = await ctx.model.Sensitive.findById(id);
+    if (!sensitive) {
+      ctx.throw(422, '敏感词不存在');
+    }
+
+    const updateSensitive = await sensitive.update(payload);
+    return {
+      content: updateSensitive.content,
+    };
+  }
+
+  // 删除
+  async destroy(id) {
+    const { ctx } = this;
+    const sensitive = await ctx.model.Sensitive.findById(id);
+    if (!sensitive) {
+      ctx.throw(422, '敏感词不存在');
+    }
+    await sensitive.destroy();
+    return {};
+  }
+
+  // 删除所选用户(条件ids[])
+  async removes(ids) {
+    const { ctx, app } = this;
+    const { Op } = app.Sequelize;
+
+    // 删除多条
+    const user = await ctx.model.Sensitive.destroy({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    });
+
+    return {
+      count: user || 0,
     };
   }
 }

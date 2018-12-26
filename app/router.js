@@ -28,6 +28,7 @@ module.exports = app => {
 
   // sensitive 敏感词
   apiV1Router.post('/sensitivetype', controller.sensitive.type);
+  router.delete('/api/v1/sensitive', controller.sensitive.removes); // 同时删除多个敏感词
   router.resources('sensitive', '/api/v1/sensitive', controller.sensitive);
 
 };
