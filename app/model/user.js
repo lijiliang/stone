@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-20 17:36:17
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-25 11:48:59
+ * @LastEditTime: 2018-12-26 15:02:22
  * @Description: 用户管理模型
  */
 'use strict';
@@ -29,6 +29,7 @@ module.exports = app => {
     updated_at: { type: DATE, defaultValue: NOW }, // 更新时间
   }, {
     freezeTableName: true, // 不自动将表名添加复数
+    comment: '用户表',
   });
 
   return User;

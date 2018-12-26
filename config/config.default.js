@@ -6,14 +6,14 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1545294654973_2137';
 
-  config.proxy = true
+  config.proxy = true;
   // 加载 s中间件
-  config.middleware = [ 'errorApiHandler' ],
+  config.middleware = [ 'errorApiHandler' ];
 
   // 只对 /api 前缀的 url 路径生效
   config.errorApiHandler = {
     match: '/api',
-  },
+  };
 
   // 配置session
   config.session = {
@@ -32,7 +32,7 @@ module.exports = appInfo => {
     password: 'Q1234567890',
     database: 'stone_instagram',
     // operatorsAliases: false,
-    timezone: '+08:00' //东八时区
+    timezone: '+08:00', // 东八时区
   };
 
   config.security = {
@@ -47,21 +47,21 @@ module.exports = appInfo => {
     // open: 'zh-CN',
     languages: {
       'zh-CN': {
-        required: '%s 必填'
-      }
+        required: '%s 必填',
+      },
     },
     async formatter(ctx, error) {
       ctx.type = 'json';
       ctx.status = 400;
       ctx.body = error;
-    }
+    },
   };
 
   config.jwt = {
     secret: 'Stone',
     enable: true, // default is false
     match: '/jwt', // optional
-  }
+  };
 
   return config;
 };

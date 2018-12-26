@@ -25,4 +25,9 @@ module.exports = app => {
   // router.get('/api/user', controller.user.index)
   router.delete('/api/v1/user', controller.user.removes); // 同时删除多个用户
   router.resources('user', '/api/v1/user', app.jwt, controller.user);
+
+  // sensitive 敏感词
+  apiV1Router.post('/sensitivetype', controller.sensitive.type);
+  router.resources('sensitive', '/api/v1/sensitive', controller.sensitive);
+
 };

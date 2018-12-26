@@ -2,12 +2,6 @@
 
 const Service = require('egg').Service;
 
-function toInt(str) {
-  if (typeof str === 'number') return str;
-  if (!str) return str;
-  return parseInt(str, 10) || 0;
-}
-
 class UserService extends Service {
   constructor(ctx) {
     super(ctx);
@@ -66,8 +60,8 @@ class UserService extends Service {
 
     const query = {
       attributes: this.attributes, // 需要显示字段
-      limit: toInt(_pageSize), // 条数限制
-      offset: toInt(_offset), // 起始位置 从0开始
+      limit: ctx.helper.toInt(_pageSize), // 条数限制
+      offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
     };
 
     // 如果有用户类型
@@ -89,8 +83,8 @@ class UserService extends Service {
 
     return {
       total: user.count,
-      curent: toInt(_current),
-      pageSize: toInt(_pageSize),
+      curent: ctx.helper.toInt(_current),
+      pageSize: ctx.helper.toInt(_pageSize),
       list: _list,
     };
   }

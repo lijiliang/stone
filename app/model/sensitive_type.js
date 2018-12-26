@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-25 11:45:54
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 11:14:58
+ * @LastEditTime: 2018-12-26 15:02:03
  * @Description: 敏感词类型模型
  */
 
@@ -17,6 +17,7 @@ module.exports = app => {
     updated_at: { type: DATE }, // 更新时间
   }, {
     freezeTableName: true, // 不自动将表名添加复数
+    comment: '敏感词类型表',
   });
 
   return SensitiveType;

@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-25 11:45:54
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 10:52:22
+ * @LastEditTime: 2018-12-26 15:48:45
  * @Description: 敏感词管理模型
  */
 
@@ -17,8 +17,14 @@ module.exports = app => {
     created_at: { type: DATE }, // 创建时间
     updated_at: { type: DATE }, // 更新时间
   }, {
+    comment: '敏感词管理表',
     freezeTableName: true, // 不自动将表名添加复数
   });
+
+  // 设置外键
+  Sensitive.associate = function() {
+    app.model.Sensitive.belongsTo(app.model.SensitiveType, { as: 'type', foreignKey: 'typeid' });
+  };
 
   return Sensitive;
 }
