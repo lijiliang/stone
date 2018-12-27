@@ -5,7 +5,7 @@ const Service = require('egg').Service;
 class UserService extends Service {
   constructor(ctx) {
     super(ctx);
-    this.attributes = [ 'userid', 'username', 'email', 'mobile', 'avatar', 'sex', 'state', 'user_type', 'last_login_ip', 'last_login_time' ]; // 用户信息需要显示字段
+    this.attributes = [ 'id', 'userid', 'username', 'email', 'mobile', 'avatar', 'sex', 'state', 'user_type', 'last_login_ip', 'last_login_time' ]; // 用户信息需要显示字段
   }
   /*
    * 根据userId查找用户
@@ -49,7 +49,6 @@ class UserService extends Service {
 
   // 获取所有用户
   async index() {
-
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
     const { current, pageSize, userType } = ctx.query;
@@ -62,6 +61,7 @@ class UserService extends Service {
       attributes: this.attributes, // 需要显示字段
       limit: ctx.helper.toInt(_pageSize), // 条数限制
       offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
+      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
     };
 
     // 如果有用户类型

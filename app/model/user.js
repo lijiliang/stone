@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-20 17:36:17
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 18:24:06
+ * @LastEditTime: 2018-12-27 10:33:53
  * @Description: 用户管理模型
  */
 'use strict';
@@ -27,10 +27,22 @@ module.exports = app => {
     last_login_time: { type: DATE }, // 最后登录时间
     created_at: { type: DATE, defaultValue: NOW }, // 创建时间
     updated_at: { type: DATE, defaultValue: NOW }, // 更新时间
+    deleted_at: { type: DATE }, // 删除时间
   }, {
     freezeTableName: true, // 不自动将表名添加复数
+    // 不删除数据库条目，但将新添加的属性deletedAt设置为当前日期（删除完成时）
+    paranoid: true,
     comment: '用户表',
   });
+
+  // 根据userid查找用户
+  // 使用 const user = await this.ctx.model.User.findByIdWithUser(userid);
+
+  User.findByIdWithUser = async function(userid) {
+    return await this.findOne({
+      where: { userid },
+    });
+  };
 
   return User;
 }

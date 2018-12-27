@@ -22,7 +22,11 @@ module.exports = {
       last_login_time: { type: DATE }, // 最后登录时间
       created_at: { type: DATE }, // 创建时间
       updated_at: { type: DATE }, // 更新时间
+      deleted_at: { type: DATE }, // 删除时间
     }, {
+      freezeTableName: true, // 不自动将表名添加复数
+      // 不删除数据库条目，但将新添加的属性deletedAt设置为当前日期（删除完成时）
+      paranoid: true,
       comment: '用户表',
     });
   },

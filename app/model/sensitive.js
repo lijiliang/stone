@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-25 11:45:54
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 15:48:45
+ * @LastEditTime: 2018-12-27 10:30:38
  * @Description: 敏感词管理模型
  */
 
@@ -22,6 +22,7 @@ module.exports = app => {
   });
 
   // 设置外键
+  // https://github.com/eggjs/examples/blob/master/sequelize/app/model/post.js
   Sensitive.associate = function() {
     app.model.Sensitive.belongsTo(app.model.SensitiveType, { as: 'type', foreignKey: 'typeid' });
   };
