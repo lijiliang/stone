@@ -25,11 +25,17 @@ class UserAccessController extends Controller {
   // 注册
   async register() {
     const ctx = this.ctx;
-    const { password, username, email, mobile } = ctx.request.body;
+    const { password, username, email, mobile, code } = ctx.request.body;
 
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
     ctx.validate(this.registerParamRule, ctx.request.body);
+
+    // 验证 验证码
+    const verifycode = await ctx.service.captcha.verifycode(2, code);
+    if (!verifycode) {
+      ctx.throw(422, '验证码不正确');
+    }
 
     // 以下两种方法都可以获取到参数检验未通过的错误信息，并重组显示到body中
     // const paramErrors = this.app.validator.validate(registerParamRule, ctx.request.body);

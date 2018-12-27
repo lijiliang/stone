@@ -1,6 +1,7 @@
 'use strict';
 
 const Service = require('egg').Service;
+const uuidv4 = require('uuid/v4');
 
 class UserAccessService extends Service {
   /*

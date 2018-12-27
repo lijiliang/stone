@@ -34,4 +34,7 @@ module.exports = app => {
   // logs 登录日志
   apiV1Router.get('/logs', app.jwt, controller.logs.index);
 
+  // 验证码
+  apiV1Router.get('/captcha', controller.captcha.getcode);
+
 };

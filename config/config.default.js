@@ -21,7 +21,7 @@ module.exports = appInfo => {
     maxAge: 5000,
     httOnly: true,
     encrypt: true,
-    renew: true, // renew等于true，每次刷新页面的时候 session 都会被延期
+    // renew: true, // renew等于true，每次刷新页面的时候 session 都会被延期
   };
 
   config.sequelize = {
