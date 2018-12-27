@@ -41,21 +41,21 @@ module.exports = appInfo => {
     },
   };
 
-  config.validator = {
-    open: async ctx => 'zh-CN',
-    // or
-    // open: 'zh-CN',
-    languages: {
-      'zh-CN': {
-        required: '%s 必填',
-      },
-    },
-    async formatter(ctx, error) {
-      ctx.type = 'json';
-      ctx.status = 400;
-      ctx.body = error;
-    },
-  };
+  // config.validator = {
+  //   open: async ctx => 'zh-CN',
+  //   // or
+  //   // open: 'zh-CN',
+  //   languages: {
+  //     'zh-CN': {
+  //       required: '%s 必填',
+  //     },
+  //   },
+  //   async formatter(ctx, error) {
+  //     ctx.type = 'json';
+  //     ctx.status = 400;
+  //     ctx.body = error;
+  //   },
+  // };
 
   config.jwt = {
     secret: 'Stone',

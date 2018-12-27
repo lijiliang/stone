@@ -109,14 +109,14 @@ class UserAccessController extends Controller {
   }
 
   // 修改基础信息
-  async resetSelf() {
+  // async resetSelf() {
 
-  }
+  // }
 
   // 修改头像
-  async resetAvatar() {
+  // async resetAvatar() {
 
-  }
+  // }
 }
 
 module.exports = UserAccessController;

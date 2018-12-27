@@ -1,7 +1,6 @@
 'use strict';
 
 const Service = require('egg').Service;
-const uuidv4 = require('uuid/v4');
 
 class UserAccessService extends Service {
   /*
@@ -190,14 +189,14 @@ class UserAccessService extends Service {
   }
 
   // 修改基础信息
-  async resetSelf() {
+  // async resetSelf() {
 
-  }
+  // }
 
   // 修改头像
-  async resetAvatar() {
+  // async resetAvatar() {
 
-  }
+  // }
 }
 
 module.exports = UserAccessService;

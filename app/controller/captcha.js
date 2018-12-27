@@ -9,7 +9,6 @@
 
 const Controller = require('egg').Controller;
 
-
 class CaptchaController extends Controller {
   // 生成图片验证码
   async getcode() {

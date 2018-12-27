@@ -28,7 +28,7 @@ class CaptchaService extends Service {
     //   noise: 5,
     // };
     // const captcha = svgCaptcha.createMathExpr(options); // 生成验证码
-    const { type, t } = ctx.query; // 接收客户端的数据，如果type为1则是登录页申请的验证码，type为2则是注册页申请的验证码
+    const { type } = ctx.query; // 接收客户端的数据，如果type为1则是登录页申请的验证码，type为2则是注册页申请的验证码
     // 登陆验证码
     if (type === '1') {
       ctx.session.login_code = captcha.text;// 把验证码保存到session
