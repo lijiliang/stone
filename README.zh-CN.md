@@ -61,5 +61,9 @@ $ npm stop
 - 上传文件
   1.单文件上传
   2.多文件上传
+  3.七牛云单文件上传
+  4.七牛云多文件上传
+七牛云操作用了[egg-full-qiniu] 这个插件。
 
 [egg]: https://eggjs.org
+[egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu

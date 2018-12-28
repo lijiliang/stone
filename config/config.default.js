@@ -77,8 +77,6 @@ module.exports = appInfo => {
   // 七牛
   config.fullQiniu = {
     default: {
-      ak: '', // Access Key
-      sk: '', // Secret Key
       useCdnDomain: true,
       isLog: true,
     },

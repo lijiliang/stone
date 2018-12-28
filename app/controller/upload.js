@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-27 18:29:45
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-28 17:09:21
+ * @LastEditTime: 2018-12-28 17:57:44
  * @Description: 文件上传
  */
 'use strict';
@@ -106,6 +106,7 @@ class UploadController extends Controller {
     const ctx = this.ctx;
     // 获取文件流
     const stream = await ctx.getFileStream();
+
     const res = await this._qiniuCreateFile(stream);
     // 文件响应
     ctx.returnBody(200, 'success', res);
@@ -141,7 +142,7 @@ class UploadController extends Controller {
     const filename = ctx.helper.uuid() + path
       .extname(stream.filename)
       .toLocaleLowerCase();
-    const res = await this.app.fullQiniu.uploadStream(filename, stream);
+    const res = await this.app.fullQiniu.uploadStream(`stone/${filename}`, stream);
     console.log(res);
     return res;
   }
