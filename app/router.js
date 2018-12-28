@@ -37,4 +37,7 @@ module.exports = app => {
   // 验证码
   apiV1Router.get('/captcha', controller.captcha.getcode);
 
+  // 上传图片
+  apiV1Router.post('/upload', controller.upload.index);
+
 };

@@ -1,10 +1,17 @@
 'use strict';
+const path = require('path');
 
 module.exports = appInfo => {
   const config = exports = {};
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1545294654973_2137';
+
+  const dir = [ path.join(appInfo.baseDir, 'app/public') ];
+
+  config.static = {
+    dir,
+  };
 
   config.proxy = true;
   // 加载 s中间件

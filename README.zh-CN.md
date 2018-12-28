@@ -35,5 +35,29 @@ $ npm stop
 - 使用 `npm test` 来执行单元测试。
 - 使用 `npm run autod` 来自动检测依赖更新，详细参见 [autod](https://www.npmjs.com/package/autod) 。
 
+## 开发日志
+
+### 20181218
+- 基础项目搭建
+- egg-validate验证接口数据
+
+### 20181221
+- 用户注册接口
+- 登录接口
+- 完成 jwt 部分，并使用 jwt 记录用户 userid
+- jwt 校验用户信息
+  1. egg-jwt 
+  2. 将 jwt 解密之后的内容挂载到 `ctx.state.user` 上，方便对用户进行标识
+  3. 一定不要使用 jwt 存放敏感信息
+
+### 20181226
+- 日志登录接口
+- 敏感词管理接口
+
+### 20181227
+- 图片验证码接口
+
+### 20181228
+- 上传文件到本地
 
 [egg]: https://eggjs.org
