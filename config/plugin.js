@@ -25,10 +25,17 @@ exports.validate = {
 
 exports.validator = {
   enable: true,
-  package: 'egg-y-validator'
+  package: 'egg-y-validator',
 };
 
 exports.jwt = {
   enable: true,
   package: 'egg-jwt',
 }
+;
+
+// 七牛云上传
+exports.fullQiniu = {
+  enable: true,
+  package: 'egg-full-qiniu',
+};

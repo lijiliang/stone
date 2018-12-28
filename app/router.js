@@ -38,7 +38,9 @@ module.exports = app => {
   apiV1Router.get('/captcha', controller.captcha.getcode);
 
   // 上传图片
-  apiV1Router.post('/upload', app.jwt, controller.upload.index);
+  apiV1Router.post('/upload', app.jwt, controller.upload.upload);
   apiV1Router.post('/mupload', app.jwt, controller.upload.multipartUpload);
+  apiV1Router.post('/uploadqn', controller.upload.qiniuUpload);
+  apiV1Router.post('/muploadqn', controller.upload.qiniuMultipartUpload);
 
 };
