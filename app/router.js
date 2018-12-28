@@ -39,5 +39,6 @@ module.exports = app => {
 
   // 上传图片
   apiV1Router.post('/upload', controller.upload.index);
+  apiV1Router.post('/mupload', controller.upload.multipartUpload);
 
 };
