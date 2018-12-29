@@ -38,9 +38,11 @@ module.exports = app => {
   apiV1Router.get('/captcha', controller.captcha.getcode);
 
   // 上传图片
-  apiV1Router.post('/upload', app.jwt, controller.upload.upload);
-  apiV1Router.post('/mupload', app.jwt, controller.upload.multipartUpload);
-  apiV1Router.post('/uploadqn', controller.upload.qiniuUpload);
-  apiV1Router.post('/muploadqn', controller.upload.qiniuMultipartUpload);
+  apiV1Router.post('/uploadlocal', app.jwt, controller.upload.uploadLoacl); // 上传单文件到本地
+  apiV1Router.post('/uploadlocals', app.jwt, controller.upload.multipartUploadLocal); // 上传多文件到本地
+  apiV1Router.post('/uploads', controller.upload.qiniuMultipartUpload); // 上传多文件到七牛云
+  apiV1Router.post('/upload', controller.upload.create);
+  apiV1Router.get('/upload', controller.upload.index);
+  apiV1Router.delete('/upload/:id', controller.upload.destroy);
 
 };
