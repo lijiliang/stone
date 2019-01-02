@@ -65,5 +65,8 @@ $ npm stop
   4.七牛云多文件上传
 七牛云操作用了[egg-full-qiniu] 这个插件。
 
+### 20181229
+- 文件管理、删除功能
+
 [egg]: https://eggjs.org
 [egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu

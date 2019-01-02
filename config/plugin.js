@@ -39,3 +39,8 @@ exports.fullQiniu = {
   enable: true,
   package: 'egg-full-qiniu',
 };
+
+exports.cors = {
+  enable: true,
+  package: 'egg-cors',
+};

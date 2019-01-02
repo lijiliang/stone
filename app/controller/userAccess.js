@@ -13,7 +13,7 @@ class UserAccessController extends Controller {
       password: { type: 'string', format: regrule.regPassword, required: true, message: '密码不正确' },
       username: { type: 'string', required: true, message: '用户名不能为空' },
       email: { type: 'email', required: true, message: '邮箱不正确' },
-      mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
+      // mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
     };
 
     this.resetPswRule = {
@@ -25,7 +25,9 @@ class UserAccessController extends Controller {
   // 注册
   async register() {
     const ctx = this.ctx;
-    const { password, username, email, mobile, code } = ctx.request.body;
+    const { password, username, email, code } = ctx.request.body;
+
+    // console.log(ctx.request.body, `${JSON.stringify(ctx.request.body)}`);
 
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
@@ -58,7 +60,7 @@ class UserAccessController extends Controller {
     // }
 
     // 注册成功返回体
-    const res = await ctx.service.userAccess.register({ password, username, email, mobile });
+    const res = await ctx.service.userAccess.register({ password, username, email });
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '注册成功', res);
   }

@@ -7,13 +7,14 @@ class CaptchaService extends Service {
   // 获取验证码
   async getcode() {
     const { ctx } = this;
+
     const codeConfig = {
       size: 4, // 验证码长度
       ignoreChars: '0o1i', // 验证码字符中排除 0o1i
       noise: 2, // 干扰线条的数量
       width: 100,
       height: 40,
-      fontSize: 36,
+      fontSize: 40,
       color: true,
       background: '#fff',
     };
@@ -25,6 +26,7 @@ class CaptchaService extends Service {
     //   height: 40, // height of captcha
     //   fontSize: 40, // captcha text size
     //   color: true,
+    //   background: '#fff',
     //   noise: 5,
     // };
     // const captcha = svgCaptcha.createMathExpr(options); // 生成验证码

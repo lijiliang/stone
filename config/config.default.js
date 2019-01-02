@@ -42,7 +42,13 @@ module.exports = appInfo => {
     timezone: '+08:00', // 东八时区
   };
 
+  config.cors = {
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    credentials: true,
+  };
+
   config.security = {
+    domainWhiteList: [ 'http://localhost:9527' ],
     csrf: {
       enable: false,
     },
@@ -77,8 +83,8 @@ module.exports = appInfo => {
   // 七牛
   config.fullQiniu = {
     default: {
-      ak: '', // Access Key
-      sk: '', // Secret Key
+      ak: 'Rk3Vf3vssymv5JdZ_uXjMQIAMVY0SId-yA2fq-hL', // Access Key
+      sk: 'g4HaVR0TlVhD7HDz1VEhONphi_YcEYyO1pCQ-YCh', // Secret Key
       useCdnDomain: true,
       isLog: true,
     },
