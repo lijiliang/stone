@@ -137,7 +137,7 @@ class UserAccessService extends Service {
       ctx.throw(422, '用户不存在');
     }
     // 返回过滤后的信息
-    const { userid, username, email, avatar, mobile, sex, state, last_login_ip, last_login_time } = user;
+    const { userid, username, email, avatar, mobile, sex, state, user_type, last_login_ip, last_login_time } = user;
     const userInfo = {
       userid,
       username,
@@ -146,6 +146,7 @@ class UserAccessService extends Service {
       mobile,
       sex,
       state,
+      roles: user_type === '1' ? [ 'admin' ] : [ 'user' ], // 1为管理员，2是普通用户
       last_login_ip,
       last_login_time,
     };

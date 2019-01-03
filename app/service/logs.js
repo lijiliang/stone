@@ -19,6 +19,7 @@ class LogsService extends Service {
       attributes: this.attributes, // 需要显示字段
       limit: ctx.helper.toInt(_pageSize), // 条数限制
       offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
+      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
     };
 
     // 查询并返回总数
