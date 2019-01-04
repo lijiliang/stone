@@ -47,6 +47,22 @@ class UserService extends Service {
     return false;
   }
 
+  /*
+   * 查询是否是管理员
+   */
+  async _hasAdmin() {
+    const { ctx } = this;
+    const _userid = ctx.state.user.data.userid;
+    const user = await this.getUserByUserId(_userid);
+    // if (user.user_type !== '1') {
+    //   ctx.throw(422, '您不是管理员，没权限删除该用户！');
+    // }
+    if (user && user.user_type === '1') {
+      return true;
+    }
+    return false;
+  }
+
   // 获取所有用户
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
@@ -92,6 +108,10 @@ class UserService extends Service {
   // 创建用户
   async create(payload) {
     const { ctx } = this;
+    const hasAdmin = await this._hasAdmin();
+    if (!hasAdmin) {
+      ctx.throw(422, '您不是管理员，没操作权限！');
+    }
     // 密码转hash
     payload.password = ctx.helper.createPasswordHash(payload.password);
     // 添加uuid
@@ -136,10 +156,27 @@ class UserService extends Service {
   // 修改用户
   async update(userid, payload) {
     const { ctx } = this;
+    const _userid = ctx.state.user.data.userid;
     const existUser = await this.getUserByUserId(userid);
     if (!existUser) {
       ctx.throw(422, '用户不存在');
     }
+
+    const hasAdmin = await this._hasAdmin();
+    // 不是管理员，但可以编辑自己的个人信息
+    if (_userid !== userid) {
+      if (!hasAdmin) {
+        ctx.throw(422, '您不是管理员，没操作权限！');
+      }
+    }
+
+    // 如果是个人用户，不允许将自己改成管理员
+    if (payload.user_type === '1') {
+      if (!hasAdmin) {
+        ctx.throw(422, '您是普遍用户，不能直接变更为管理员。请联系管理员！');
+      }
+    }
+
     // 验证邮箱
     if (existUser.email !== payload.email) {
       const existUserEmail = await this._hasRegister(payload.email);
@@ -148,7 +185,9 @@ class UserService extends Service {
       }
     }
     // 密码转hash
-    payload.password = ctx.helper.createPasswordHash(payload.password);
+    if (payload.password) {
+      payload.password = ctx.helper.createPasswordHash(payload.password);
+    }
     // 更新数据
     const updateUser = await existUser.update(payload);
     return {
@@ -162,10 +201,22 @@ class UserService extends Service {
   // 删除单个用户
   async destroy(userid) {
     const { ctx } = this;
+    const _userid = ctx.state.user.data.userid;
+
+    const hasAdmin = await this._hasAdmin();
+    if (!hasAdmin) {
+      ctx.throw(422, '您不是管理员，没操作权限！');
+    }
+
     const user = await this.getUserByUserId(userid);
     if (!user) {
       ctx.throw(422, '用户不存在');
     }
+
+    if (_userid === user.userid) {
+      ctx.throw(422, '不能删除自己');
+    }
+
     await user.destroy();
     return {
     };
@@ -175,6 +226,11 @@ class UserService extends Service {
   async removes(ids) {
     const { ctx, app } = this;
     const { Op } = app.Sequelize;
+
+    const hasAdmin = await this._hasAdmin();
+    if (!hasAdmin) {
+      ctx.throw(422, '您不是管理员，没操作权限！');
+    }
 
     // 删除多条
     const user = await ctx.model.User.destroy({

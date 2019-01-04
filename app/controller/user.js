@@ -7,11 +7,20 @@ class UserController extends Controller {
   constructor(ctx) {
     super(ctx);
     this.userParamRule = {
-      password: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
+      password: { type: 'string', required: true, format: regrule.regPassword, message: '密码必须有8位且有一个大写字母和数字' },
       username: { type: 'string', required: true, message: '用户名不能为空' },
       email: { type: 'email', required: true, message: '邮箱不正确' },
       mobile: { type: 'string', required: false, allowEmpty: true, format: regrule.regPhone, message: '手机号不正确' },
-      sex: { type: 'enum', required: false, allowEmpty: true, values: [ '0', '1', '2' ], message: '性别不正确' },
+      sex: { type: 'enum', required: false, allowEmpty: true, values: [ 0, 1, 2 ], message: '性别不正确' },
+      user_type: { type: 'enum', required: false, allowEmpty: true, values: [ '1', '2' ], message: '用户类型不正确' },
+    };
+    // 更新用户信息，密码可以为空
+    this.userParamUpdateRule = {
+      password: { type: 'string', required: false, allowEmpty: true, format: regrule.regPassword, message: '密码必须有8位且有一个大写字母和数字 ' },
+      username: { type: 'string', required: true, message: '用户名不能为空' },
+      email: { type: 'email', required: true, message: '邮箱不正确' },
+      mobile: { type: 'string', required: false, allowEmpty: true, format: regrule.regPhone, message: '手机号不正确' },
+      sex: { type: 'enum', required: false, allowEmpty: true, values: [ 0, 1, 2 ], message: '性别不正确' },
       user_type: { type: 'enum', required: false, allowEmpty: true, values: [ '1', '2' ], message: '用户类型不正确' },
     };
   }
@@ -45,7 +54,7 @@ class UserController extends Controller {
     // 调用 Service 进行业务处理
     const res = await service.user.create(payload);
     // 设置响应内容和响应状态码
-    ctx.returnBody(200, '创建用户', res);
+    ctx.returnBody(200, '创建用户成功', res);
   }
 
   // 获取单个用户
@@ -66,11 +75,11 @@ class UserController extends Controller {
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.userParamRule, payload);
+    ctx.validate(this.userParamUpdateRule, payload);
     // 调用 Service 进行业务处理
     const res = await service.user.update(id, payload);
     // 设置响应内容和响应状态码
-    ctx.returnBody(200, '修改用户', res);
+    ctx.returnBody(200, '修改用户成功', res);
   }
 
   // 删除单个用户
