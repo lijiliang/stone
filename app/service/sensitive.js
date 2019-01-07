@@ -44,6 +44,7 @@ class SensitiveService extends Service {
         as: 'type',
         attributes: [ 'typename' ],
       },
+      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
     };
 
     // 查询并返回总数
