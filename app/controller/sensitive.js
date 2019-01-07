@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-26 11:19:13
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-26 17:52:34
+ * @LastEditTime: 2019-01-07 11:44:57
  * @Description: 敏感词管理 控制器
  */
 'use strict';
@@ -24,6 +24,13 @@ class SensitiveController extends Controller {
     const payload = ctx.request.body || {};
     const res = await ctx.service.sensitive.type(payload);
     ctx.returnBody(200, '添加成功', res);
+  }
+
+  // 查询敏感词列表
+  async typeList() {
+    const { ctx } = this;
+    const res = await ctx.service.sensitive.typeList();
+    ctx.returnBody(200, 'success', res);
   }
 
   // 查询所有敏感词

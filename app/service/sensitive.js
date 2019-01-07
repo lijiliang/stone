@@ -17,6 +17,16 @@ class SensitiveService extends Service {
     };
   }
 
+  // 查询敏感词列表
+  async typeList() {
+    const { ctx } = this;
+    const query = {
+      attributes: [ 'typeid', 'typename' ], // 需要显示字段
+    };
+    const _list = await ctx.model.SensitiveType.findAll(query);
+    return _list;
+  }
+
   // 查询所有敏感词
   async index() {
     const { ctx } = this;
