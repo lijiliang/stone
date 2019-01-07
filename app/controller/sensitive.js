@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-26 11:19:13
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-07 11:44:57
+ * @LastEditTime: 2019-01-07 16:24:57
  * @Description: 敏感词管理 控制器
  */
 'use strict';
@@ -13,7 +13,7 @@ class SensitiveController extends Controller {
   constructor(ctx) {
     super(ctx);
     this.typeParamRule = {
-      typeid: { type: 'string', required: true, message: 'id必须是数字类型' },
+      typeid: { type: 'number', required: true, message: 'id必须是数字类型' },
       content: { type: 'string', required: true, message: '敏感字不正确' },
     };
   }
