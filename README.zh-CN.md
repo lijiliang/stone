@@ -68,5 +68,8 @@ $ npm stop
 ### 20181229
 - 文件管理、删除功能
 
+### 20190108
+- 接口管理功能
+
 [egg]: https://eggjs.org
 [egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu
