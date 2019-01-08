@@ -46,4 +46,7 @@ module.exports = app => {
   apiV1Router.get('/upload', controller.upload.index);
   apiV1Router.delete('/upload/:id', controller.upload.destroy);
 
+  // 接口管理
+  router.resources('interface', '/api/v1/interface', controller.interface);
+
 };
