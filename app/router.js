@@ -48,5 +48,6 @@ module.exports = app => {
 
   // 接口管理
   router.resources('interface', '/api/v1/interface', app.jwt, controller.interface);
+  router.delete('/api/v1/interface', app.jwt, controller.interface.removes); // 同时删除多个敏感词
 
 };

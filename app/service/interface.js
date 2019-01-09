@@ -7,7 +7,7 @@ class InterfaceService extends Service {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
     // const { Op } = this.app.Sequelize;
-    const { current, pageSize, name, path, method } = ctx.query;
+    const { current, pageSize, name, path, method, sortBy, descending } = ctx.query;
     const _current = current ? current : 1; // 当前页数
     const _pageSize = pageSize ? pageSize : 10; // 每页条数
     const _offset = ((Number(_current)) - 1) * Number(_pageSize); // 偏移量
@@ -30,6 +30,13 @@ class InterfaceService extends Service {
       };
     }
 
+    const _order = [[ 'id', 'desc' ]]; // 排序
+    if (sortBy) {
+      if (descending === 'true') {
+        _order.push([ sortBy, 'desc' ]);
+      }
+    }
+
     const query = {
       where: _where,
       // where: {
@@ -43,7 +50,7 @@ class InterfaceService extends Service {
       attributes: this.attributes, // 需要显示字段
       limit: ctx.helper.toInt(_pageSize), // 条数限制
       offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
-      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
+      order: _order, // 排序
     };
 
     const _data = await ctx.model.Interface.findAndCountAll(query);
@@ -101,6 +108,25 @@ class InterfaceService extends Service {
     }
     await data.destroy();
     return {};
+  }
+
+  // 删除所选用户(条件ids[])
+  async removes(ids) {
+    const { ctx, app } = this;
+    const { Op } = app.Sequelize;
+
+    // 删除多条
+    const res = await ctx.model.Interface.destroy({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    });
+
+    return {
+      count: res || 0,
+    };
   }
 }
 

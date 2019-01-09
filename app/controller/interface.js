@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2019-01-08 16:39:39
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-08 17:51:13
+ * @LastEditTime: 2019-01-09 15:35:04
  * @Description: 接口控制器
  */
 'use strict';
@@ -70,6 +70,19 @@ class InterfaceController extends Controller {
     const res = await service.interface.destroy(id);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '删除成功', res);
+  }
+
+  // 删除所选(字符串 转成 条件id[])
+  async removes() {
+    const { ctx, service } = this;
+    const { ids } = ctx.request.body;
+    // 组装参数
+    const _ids = ids.split(',');
+    // 调用 Service 进行业务处理
+    const res = await service.interface.removes(_ids);
+    // 设置响应内容和响应状态
+    ctx.returnBody(200, '操作成功', res);
+
   }
 }
 
