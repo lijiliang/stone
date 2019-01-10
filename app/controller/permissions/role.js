@@ -14,7 +14,7 @@ class RoleController extends Controller {
   // 获取列表(分页/模糊)
   async index() {
     const ctx = this.ctx;
-    const res = await ctx.service.permission.role.index();
+    const res = await ctx.service.permissions.role.index();
     ctx.returnBody(200, '列表数据', res);
   }
 
@@ -24,7 +24,7 @@ class RoleController extends Controller {
     // 组装参数
     const { id } = ctx.params;
     // 调用Service进行业务处理
-    const res = await service.permission.role.show(id);
+    const res = await service.permissions.role.show(id);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '获取成功', res);
   }
@@ -36,7 +36,7 @@ class RoleController extends Controller {
     // 校验参数
     ctx.validate(this.paramRule, payload);
     // 调用 Service 进行业务处理
-    const res = await service.permission.role.create(payload);
+    const res = await service.permissions.role.create(payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '添加成功', res);
   }
@@ -50,7 +50,7 @@ class RoleController extends Controller {
     // 校验参数
     ctx.validate(this.paramRule, payload);
     // 调用 Service 进行业务处理
-    const res = await service.permission.role.update(id, payload);
+    const res = await service.permissions.role.update(id, payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '修改成功', res);
   }
@@ -61,7 +61,7 @@ class RoleController extends Controller {
     // 组装参数
     const { id } = ctx.params;
     // 调用 Service进行业务处理
-    const res = await service.permission.role.destroy(id);
+    const res = await service.permissions.role.destroy(id);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '删除成功', res);
   }
@@ -73,7 +73,7 @@ class RoleController extends Controller {
     // 组装参数
     const _ids = ids.split(',');
     // 调用 Service 进行业务处理
-    const res = await service.permission.role.removes(_ids);
+    const res = await service.permissions.role.removes(_ids);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '操作成功', res);
 

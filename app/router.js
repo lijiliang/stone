@@ -52,6 +52,6 @@ module.exports = app => {
   router.delete('/api/v1/interface', app.jwt, controller.interface.removes); // 同时删除多个敏感词
 
   // 角色管理
-  router.resources('role', '/api/admin/v1/role', app.jwt, controller.permission.role);
+  router.resources('role', '/api/admin/v1/role', app.jwt, controller.permissions.role);
 
 };

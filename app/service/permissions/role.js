@@ -19,7 +19,7 @@ class RoleService extends Service {
       };
     }
     if (code) {
-      _where.path = {
+      _where.code = {
         $like: `%${code}%`,
       };
     }
