@@ -7,6 +7,7 @@ module.exports = app => {
   const { router, controller } = app;
   const { userAccess } = controller;
   const apiV1Router = app.router.namespace('/api/v1');
+  // const apiAdminV1Router = app.router.namespace('/api/admin/v1');
 
   router.get('/', controller.home.index);
 
@@ -49,5 +50,8 @@ module.exports = app => {
   // 接口管理
   router.resources('interface', '/api/v1/interface', app.jwt, controller.interface);
   router.delete('/api/v1/interface', app.jwt, controller.interface.removes); // 同时删除多个敏感词
+
+  // 角色管理
+  router.resources('role', '/api/admin/v1/role', app.jwt, controller.permission.role);
 
 };
