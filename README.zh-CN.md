@@ -35,6 +35,12 @@ $ npm stop
 - 使用 `npm test` 来执行单元测试。
 - 使用 `npm run autod` 来自动检测依赖更新，详细参见 [autod](https://www.npmjs.com/package/autod) 。
 
+## 记录
+初始化一个表
+```
+npx sequelize migration:generate --name=init-role_user
+```
+
 ## 开发日志
 
 ### 20181218
