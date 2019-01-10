@@ -53,5 +53,6 @@ module.exports = app => {
 
   // 角色管理
   router.resources('role', '/api/admin/v1/role', app.jwt, controller.permissions.role);
+  router.delete('/api/admin/v1/role', app.jwt, controller.permissions.role.removes); // 同时删除多个角色
 
 };
