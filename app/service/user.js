@@ -67,26 +67,49 @@ class UserService extends Service {
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
-    const { current, pageSize, userType, roleId } = ctx.query;
+    const { current, pageSize, userType, sortBy, descending, filter } = ctx.query;
     const _current = current ? current : 1; // 当前页数
     const _pageSize = pageSize ? pageSize : 10; // 每页条数
     const _userType = userType; // 用户类型，1:admin ;2:会员
     const _offset = ((Number(_current)) - 1) * Number(_pageSize); // 偏移量
 
+    const { username, email, roleId } = filter ? JSON.parse(filter) : {};
+
+    // 模糊查询
+    const _where = {};
+    // 如果有用户类型
+    if (_userType) {
+      _where.user_type = _userType;
+    }
+
+    // 如果有表单搜索
+    if (username) {
+      _where.username = {
+        $like: `%${username}%`,
+      };
+    }
+    if (email) {
+      _where.email = {
+        $like: `%${email}%`,
+      };
+    }
+
+    const _order = [[ 'id', 'desc' ]]; // 排序 [[ 'id', 'desc' ]]
+    if (sortBy) {
+      if (descending === 'true') {
+        _order.push([ sortBy, 'desc' ]);
+      }
+    }
+
     const query = {
-      // distinct: true, // 去重
+      where: _where,
       attributes: this.attributes, // 需要显示字段
       limit: ctx.helper.toInt(_pageSize), // 条数限制
       offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
+      order: _order,
       // order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
+      // distinct: true, // 去重
     };
-
-    // 如果有用户类型
-    if (_userType) {
-      query.where = {
-        user_type: _userType,
-      };
-    }
 
     // 如果有角色id
     if (roleId) {
@@ -96,9 +119,6 @@ class UserService extends Service {
         as: 'role',
         // required: true, // 只显示匹配到的项
         attributes: [ 'role_id', 'user_id' ],
-        // where: {
-        //   role_id: roleId,
-        // },
       };
     }
 
