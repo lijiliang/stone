@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-20 17:36:17
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-27 10:33:53
+ * @LastEditTime: 2019-01-15 16:22:20
  * @Description: 用户管理模型
  */
 'use strict';
@@ -10,8 +10,8 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE, NOW } = app.Sequelize;
   const User = app.model.define('st_users', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true }, // 记录Id
-    userid: { type: STRING(100) }, // 用户Id
+    id: { type: INTEGER, autoIncrement: true }, // 记录Id
+    userid: { type: STRING(100), primaryKey: true }, // 用户Id
     username: { type: STRING(60), allowNull: false }, // 用户名
     email: { type: STRING(100), allowNull: false, isEmail: true }, // email 地址
     password: { type: STRING(255), allowNull: false }, // 密码
@@ -35,6 +35,13 @@ module.exports = app => {
     comment: '用户表',
   });
 
+  User.associate = function() {
+    app.model.User.hasMany(app.model.RoleUser, {
+      as: 'role',
+      foreignKey: 'user_id',
+      constraints: false, //
+    });
+  };
   // 根据userid查找用户
   // 使用 const user = await this.ctx.model.User.findByIdWithUser(userid);
 

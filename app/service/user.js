@@ -67,23 +67,38 @@ class UserService extends Service {
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
-    const { current, pageSize, userType } = ctx.query;
+    const { current, pageSize, userType, roleId } = ctx.query;
     const _current = current ? current : 1; // 当前页数
     const _pageSize = pageSize ? pageSize : 10; // 每页条数
     const _userType = userType; // 用户类型，1:admin ;2:会员
     const _offset = ((Number(_current)) - 1) * Number(_pageSize); // 偏移量
 
     const query = {
+      // distinct: true, // 去重
       attributes: this.attributes, // 需要显示字段
       limit: ctx.helper.toInt(_pageSize), // 条数限制
       offset: ctx.helper.toInt(_offset), // 起始位置 从0开始
-      order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
+      // order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]], // 排序
     };
 
     // 如果有用户类型
     if (_userType) {
       query.where = {
         user_type: _userType,
+      };
+    }
+
+    // 如果有角色id
+    if (roleId) {
+      query.distinct = true;
+      query.include = {
+        model: this.ctx.model.RoleUser,
+        as: 'role',
+        // required: true, // 只显示匹配到的项
+        attributes: [ 'role_id', 'user_id' ],
+        // where: {
+        //   role_id: roleId,
+        // },
       };
     }
 
@@ -94,6 +109,22 @@ class UserService extends Service {
       const jsonObject = Object.assign({}, e.dataValues);
       // jsonObject.last_login_ip = e.last_login_ip;
       jsonObject.last_login_time = this.ctx.helper.formatTime(e.last_login_time);
+
+      // isAdd true代表已添加角色，false代表没添加角色
+      if (jsonObject.role) {
+        // 查询当前角色id是否已经存在
+        const index = jsonObject.role.findIndex(item => {
+          return item.role_id === parseInt(roleId);
+        });
+        if (index > -1) {
+          jsonObject.isAdd = true;
+        } else {
+          jsonObject.isAdd = false;
+        }
+
+        jsonObject.role = jsonObject.role.length; // 重置角色列表为个数
+      }
+
       return jsonObject;
     });
 

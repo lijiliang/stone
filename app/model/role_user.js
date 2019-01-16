@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2019-01-10 11:08:05
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-10 11:25:45
+ * @LastEditTime: 2019-01-15 15:18:55
  * @Description: 角色用户关联模型
  */
 
@@ -20,7 +20,9 @@ module.exports = app => {
     freezeTableName: true, // 不自动将表名添加复数
     comment: '角色用户关联表',
   });
-
+  // RoleUser.associate = function() {
+  //   app.model.User.belongsTo(app.model.RoleUser, { as: 'r9le', foreignKey: 'role_id', constraints: false });
+  // };
   return RoleUser;
 }
 ;
