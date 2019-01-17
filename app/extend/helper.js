@@ -3,18 +3,6 @@ const bcrypt = require('bcryptjs');
 const sd = require('silly-datetime');
 const uuidv4 = require('uuid/v4');
 
-// function findChildNode(arrData, node) {
-//   // console.log('node', node);
-//   let ans = [];
-//   for (let i = 0; i < arrData.length; i++) {
-//     if (node.id === arrData[i].pid) {
-//       ans.push(arrData[i]);
-//       ans = ans.concat(findChildNode(arrData, arrData[i]));
-//     }
-//   }
-//   return ans;
-// }
-
 module.exports = {
   /**
    * 创建密码hash
