@@ -24,7 +24,7 @@ module.exports = app => {
   // router.put('/api/user/:id', controller.user.update)
   // router.get('/api/user/:id', controller.user.show)
   // router.get('/api/user', controller.user.index)
-  router.delete('/api/v1/user', controller.user.removes); // 同时删除多个用户
+  router.delete('/api/v1/user', app.jwt, controller.user.removes); // 同时删除多个用户
   router.resources('user', '/api/v1/user', app.jwt, controller.user);
 
   // sensitive 敏感词
@@ -57,5 +57,8 @@ module.exports = app => {
 
   // 角色与用户关联
   router.resources('roleUser', '/api/admin/v1/roleuser', app.jwt, controller.permissions.roleUser);
+
+  // 资源管理
+  router.resources('resource', '/api/admin/v1/resource', app.jwt, controller.permissions.resource);
 
 };

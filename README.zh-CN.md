@@ -87,5 +87,8 @@ npx sequelize db:migrate
 ### 20190108
 - 接口管理功能
 
+### 20190117
+- 资源管理功能
+
 [egg]: https://eggjs.org
 [egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu

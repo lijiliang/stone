@@ -14,13 +14,13 @@ module.exports = {
       icon: { type: STRING(20) }, // 图标
       component: { type: STRING(20) }, // 组件
       componentPath: { type: STRING(100) }, // 组件路径
-      type: { type: STRING(2), defaultValue: '1' }, // 类型，1:菜单; 2:功能
+      type: { type: INTEGER, defaultValue: 1 }, // 类型，1:菜单; 2:功能
       sort: { type: INTEGER }, // 排序
       isLock: { type: BOOLEAN, defaultValue: false }, // 锁定
       permission: { type: STRING(20) }, // 权限标识
       state: { // 菜单状态 0：禁用； 1：启用
-        type: STRING(2),
-        defaultValue: '1', // 默认值
+        type: INTEGER,
+        defaultValue: 1, // 默认值
       },
       cache: { type: BOOLEAN, defaultValue: false }, // 缓存
       created_at: { type: DATE }, // 创建时间
