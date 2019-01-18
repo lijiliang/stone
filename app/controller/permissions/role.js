@@ -90,6 +90,7 @@ class RoleController extends Controller {
     const _data = {
       role_id: payload.role_id,
       resource_id: payload.resource_id.join(','),
+      resource_id_fe: payload.resource_id_fe.join(','),
     };
     // 调用 Service 进行业务处理
     const res = await service.permissions.role.saveRoleResource(_data);

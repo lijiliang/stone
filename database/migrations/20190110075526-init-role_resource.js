@@ -8,6 +8,7 @@ module.exports = {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true }, // 记录Id
       role_id: { type: INTEGER }, // 角色id
       resource_id: { type: STRING(100) }, // 资源id
+      resource_id_fe: { type: STRING(100) }, // 资源id(前端用，选中没有父id)
       created_at: { type: DATE }, // 创建时间
       updated_at: { type: DATE }, // 更新时间
     }, {
