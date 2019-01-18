@@ -107,4 +107,22 @@ module.exports = {
       }
     }
   },
+  /*
+   * 根据传过来的options取出匹配的数组id
+   * @param {Array} list 列表对象数据 [{},{}]
+   * @param {String} options 'role_id'
+   * @returns 数组
+   */
+  findOptionsIds(list, options) {
+    return list.reduce(function(r, item) {
+      const _item = item.dataValues;
+      for (const k in _item) {
+        if (k === options) {
+          // 将所有传转成字符串，再根据,号转成数组
+          r.push(...('' + _item[k]).split(','));
+        }
+      }
+      return r;
+    }, []);
+  },
 };

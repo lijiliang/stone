@@ -55,6 +55,7 @@ module.exports = app => {
   router.resources('role', '/api/admin/v1/role', app.jwt, controller.permissions.role);
   router.delete('/api/admin/v1/role', app.jwt, controller.permissions.role.removes); // 同时删除多个角色
 
+
   // 角色与用户关联
   router.resources('roleUser', '/api/admin/v1/roleuser', app.jwt, controller.permissions.roleUser);
 
@@ -63,5 +64,6 @@ module.exports = app => {
 
   // 资源管理
   router.resources('resource', '/api/admin/v1/resource', app.jwt, controller.permissions.resource);
+  router.get('/api/admin/v1/menu', app.jwt, controller.permissions.resource.menu); // 当前用户所能访问的资源(菜单)
 
 };

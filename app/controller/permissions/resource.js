@@ -74,7 +74,15 @@ class ResourceController extends Controller {
     const res = await service.permissions.resource.removes(_ids);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '操作成功', res);
+  }
 
+  // 获取菜单
+  async menu() {
+    const { ctx, service } = this;
+    // 调用Service进行业务处理
+    const res = await service.permissions.resource.menu();
+    // 设置响应内容和响应状态码
+    ctx.returnBody(200, '获取成功', res);
   }
 }
 

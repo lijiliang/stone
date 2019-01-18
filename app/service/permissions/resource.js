@@ -114,6 +114,59 @@ class ResourceService extends Service {
       count: res || 0,
     };
   }
+
+  async menu() {
+    // 获取菜单的步骤
+    // 1、查出用户
+    // 2、查用户所有的角色(一个用户会有多个角色)
+    // 3、根据角色列表查出该角色能访问的所有资源id
+    // 4、利用资源表与查出用户所能访问的资源计算出访用户所能访问的菜单数据
+    const { ctx } = this;
+    const _userid = ctx.state.user.data.userid;
+
+    // 2、查询用户所有的角色
+    const userRole = await ctx.model.RoleUser.findAll({
+      where: {
+        user_id: _userid,
+      },
+    });
+    // 用户的角色列表
+    const userRoleIds = ctx.helper.findOptionsIds(userRole, 'role_id');
+
+    // 3、根据角色列表查出该角色能访问的所有资源id
+    const roleResource = await ctx.model.RoleResource.findAll({
+      where: {
+        role_id: {
+          $or: userRoleIds,
+        },
+      },
+    });
+    // 用户能访问的资源列表
+    const userResource = ctx.helper.findOptionsIds(roleResource, 'resource_id');
+    const userResourceIds = [ ...new Set(userResource) ];
+
+    const resource = await ctx.model.Resource.findAll({
+      attributes: this.attributes,
+      where: {
+        id: {
+          $or: userResourceIds,
+        },
+      },
+    });
+
+    // console.log(userResourceIds.reduce(function(prev, curr) {
+    //   return prev.concat(curr);
+    // }), [].concat.apply([], userResourceIds));
+    // console.log(userResourceIds);
+
+
+    // 返回整理后的数据
+    const _list = resource.map(e => {
+      const jsonObject = Object.assign({}, e.dataValues);
+      return jsonObject;
+    });
+    return ctx.helper.transTreeData(_list);
+  }
 }
 
 module.exports = ResourceService;
