@@ -10,6 +10,10 @@ class RoleController extends Controller {
       code: { type: 'string', required: true, message: '标识不能为空' },
       description: { type: 'string', required: true, message: '描述不能为空' },
     };
+    this.resourceParamRule = {
+      role_id: { type: 'number', required: true, message: '角色不能为空' },
+      resource_id: { type: 'array', required: true, message: '资源id不能为空' },
+    };
   }
   // 获取列表(分页/模糊)
   async index() {
@@ -75,7 +79,37 @@ class RoleController extends Controller {
     const res = await service.permissions.role.removes(_ids);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '操作成功', res);
+  }
 
+  // 保存角色与资源关联
+  async saveRoleResource() {
+    const { ctx, service } = this;
+    const payload = ctx.request.body || {};
+    // 校验参数
+    ctx.validate(this.resourceParamRule, payload);
+    const _data = {
+      role_id: payload.role_id,
+      resource_id: payload.resource_id.join(','),
+    };
+    // 调用 Service 进行业务处理
+    const res = await service.permissions.role.saveRoleResource(_data);
+    // 设置响应内容和响应状态码
+    ctx.returnBody(200, '保存成功', res);
+  }
+
+  // 获取角色与资源关联
+  async getRoleResources() {
+    const { ctx, service } = this;
+    // 组装参数
+    const { id } = ctx.params;
+    // 调用 Service 进行业务处理
+    const res = await service.permissions.role.getRoleResources(id);
+    // 设置响应内容和响应状态码
+    if (res) {
+      ctx.returnBody(200, '获取成功', res);
+    } else {
+      ctx.returnBody(200, '此角色暂无资源关联,请添加', res, false);
+    }
   }
 }
 

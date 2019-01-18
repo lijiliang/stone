@@ -114,6 +114,34 @@ class RoleService extends Service {
       count: res || 0,
     };
   }
+
+  // 获取角色与资源关联列表
+  async getRoleResources(id) {
+    const query = {
+      role_id: id,
+    };
+    const _data = await this.ctx.model.RoleResource.findOne({
+      where: query,
+    });
+    // if (!_data) {
+    //   ctx.throw(422, '此角色暂无资源关联,请添加');
+    // }
+    return _data;
+  }
+
+  // 保存角色与资源关联
+  async saveRoleResource(payload) {
+    const { ctx } = this;
+    const findIdData = await this.getRoleResources(payload.role_id);
+    let _data = {};
+    if (findIdData) {
+      _data = await findIdData.update(payload);
+    } else {
+      _data = await ctx.model.RoleResource.create(payload);
+    }
+    // const _data = await ctx.model.RoleResource.create(payload);
+    return _data;
+  }
 }
 
 module.exports = RoleService;
