@@ -23,6 +23,7 @@ module.exports = {
         defaultValue: 1, // 默认值
       },
       cache: { type: BOOLEAN, defaultValue: false }, // 缓存
+      redirect: { type: STRING(100) }, // 重定向
       created_at: { type: DATE }, // 创建时间
       updated_at: { type: DATE }, // 更新时间
     }, {

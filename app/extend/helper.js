@@ -118,10 +118,48 @@ module.exports = {
       const _item = item.dataValues;
       for (const k in _item) {
         if (k === options) {
-          // 将所有传转成字符串，再根据,号转成数组
+          // 将所有值转成字符串，再根据,号转成数组
           r.push(...('' + _item[k]).split(','));
         }
       }
+      return r;
+    }, []);
+  },
+  /*
+   * 将路由数据转成前端可用的格式
+   * @param {Arrar} list
+   * list: [{{"path":"/system","name":"system","title":"系统设置","icon":"system","component":null,"componentPath":"/views/layout/Layout","cache":false,"redirect":"noredirect","children":{[...]}}]
+   * @returns 转换后的数组
+   */
+  routeTransformData(list) {
+    const _this = this;
+    return list.reduce(function(r, item) {
+      const temp = {};
+      for (const k in item) {
+        if (k === 'children') {
+          if (item[k].length > 0) {
+            temp[k] = _this.routeTransformData(item[k]); // 递归匿名方法
+          }
+        } else {
+          const _meta = {};
+          temp.path = item.path;
+          temp.component = item.componentPath;
+          temp.name = item.name;
+          if (item.redirect) {
+            temp.redirect = item.redirect;
+          }
+          // 配置属性
+          _meta.title = item.name;
+          if (item.icon) {
+            _meta.icon = item.icon;
+          }
+          if (item.cache) {
+            _meta.noCache = item.cache;
+          }
+          temp.meta = _meta;
+        }
+      }
+      r.push(temp);
       return r;
     }, []);
   },

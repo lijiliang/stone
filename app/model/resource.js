@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2019-01-10 11:08:05
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-17 11:34:27
+ * @LastEditTime: 2019-01-21 11:40:08
  * @Description: 权限资源表模型
  */
 
@@ -29,6 +29,7 @@ module.exports = app => {
       defaultValue: 1, // 默认值
     },
     cache: { type: BOOLEAN, defaultValue: false }, // 缓存
+    redirect: { type: STRING(100) }, // 重定向
     created_at: { type: DATE }, // 创建时间
     updated_at: { type: DATE }, // 更新时间
   }, {

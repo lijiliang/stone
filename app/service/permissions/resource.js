@@ -5,7 +5,7 @@ const Service = require('egg').Service;
 class ResourceService extends Service {
   constructor(ctx) {
     super(ctx);
-    this.attributes = [ 'id', 'pid', 'pids', 'path', 'name', 'title', 'icon', 'component', 'componentPath', 'type', 'sort', 'isLock', 'permission', 'state', 'cache' ]; // 需要显示字段
+    this.attributes = [ 'id', 'pid', 'path', 'name', 'title', 'icon', 'component', 'componentPath', 'type', 'sort', 'isLock', 'permission', 'state', 'cache', 'redirect' ]; // 需要显示字段
   }
 
   async getResource(payload) {
@@ -24,7 +24,10 @@ class ResourceService extends Service {
     const query = {
       attributes: this.attributes,
     };
-    const _data = await ctx.model.Resource.findAndCountAll(query);
+    const _data = await ctx.model.Resource.findAndCountAll({
+      query,
+      order: [[ 'sort' ]], // 排序
+    });
 
     // 返回整理后的数据
     const _list = _data.rows.map(e => {
@@ -143,7 +146,7 @@ class ResourceService extends Service {
     });
     // 用户能访问的资源列表
     const userResource = ctx.helper.findOptionsIds(roleResource, 'resource_id');
-    const userResourceIds = [ ...new Set(userResource) ];
+    const userResourceIds = [ ...new Set(userResource) ]; // 去重
 
     const resource = await ctx.model.Resource.findAll({
       attributes: this.attributes,
@@ -152,20 +155,18 @@ class ResourceService extends Service {
           $or: userResourceIds,
         },
       },
+      order: [[ 'sort' ]], // 排序
     });
-
-    // console.log(userResourceIds.reduce(function(prev, curr) {
-    //   return prev.concat(curr);
-    // }), [].concat.apply([], userResourceIds));
-    // console.log(userResourceIds);
-
 
     // 返回整理后的数据
     const _list = resource.map(e => {
       const jsonObject = Object.assign({}, e.dataValues);
       return jsonObject;
     });
-    return ctx.helper.transTreeData(_list);
+
+    // 原始数据
+    const arrData = await ctx.helper.transTreeData(_list);
+    return ctx.helper.routeTransformData(arrData); // 转成路由需要的数据再返回
   }
 }
 
