@@ -143,7 +143,8 @@ module.exports = {
         } else {
           const _meta = {};
           temp.path = item.path;
-          temp.component = item.componentPath;
+          // temp.component = item.componentPath;
+          temp.component = item.component;
           temp.name = item.name;
           if (item.redirect) {
             temp.redirect = item.redirect;

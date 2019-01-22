@@ -167,6 +167,7 @@ class ResourceService extends Service {
     // 原始数据
     const arrData = await ctx.helper.transTreeData(_list);
     return ctx.helper.routeTransformData(arrData); // 转成路由需要的数据再返回
+    // return _list;
   }
 }
 

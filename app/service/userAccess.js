@@ -136,6 +136,7 @@ class UserAccessService extends Service {
     if (!user) {
       ctx.throw(422, '用户不存在');
     }
+
     // 返回过滤后的信息
     const { userid, username, email, avatar, mobile, sex, state, user_type, last_login_ip, last_login_time } = user;
     const userInfo = {
@@ -150,6 +151,14 @@ class UserAccessService extends Service {
       last_login_ip,
       last_login_time,
     };
+
+    // 管理员能访问的菜单数据
+    let menuData = {};
+    if (user.user_type === '1') {
+      menuData = await this.service.permissions.resource.menu();
+      userInfo.accessRouters = menuData;
+    }
+
     return userInfo;
   }
 
