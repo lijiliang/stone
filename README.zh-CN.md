@@ -38,7 +38,7 @@ $ npm stop
 ## 记录
 初始化一个表
 ```
-npx sequelize migration:generate --name=init-role_user
+npx sequelize migration:generate --name=init-st_users
 
 ```
 执行 migrate 进行数据库变更
@@ -89,6 +89,9 @@ npx sequelize db:migrate
 
 ### 20190117
 - 资源管理功能
+
+### 20190122
+- RBAC(基于角色的权限访问控制)功能
 
 [egg]: https://eggjs.org
 [egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu
