@@ -4,7 +4,7 @@ const Controller = require('egg').Controller;
 const regrule = require('../utils/regrule');
 
 /**
- * @controller userAccess 用户入口接口
+ * @controller userAccess 用户服务，提供注册、登陆等功能接口
  */
 class UserAccessController extends Controller {
   constructor(ctx) {
