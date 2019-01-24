@@ -1,7 +1,5 @@
 # stone-api
 
-
-
 ## 快速入门
 
 <!-- 在此次添加使用文档 -->
@@ -13,7 +11,8 @@
 ```bash
 $ npm i
 $ npm run dev
-$ open http://localhost:7001/
+$ open http://localhost:7300/
+$ open http://127.0.0.1:7300/swagger-ui.html#/
 ```
 
 ### 部署
@@ -92,6 +91,9 @@ npx sequelize db:migrate
 
 ### 20190122
 - RBAC(基于角色的权限访问控制)功能
+
+### 20191124
+- swagger自动生成api文档
 
 [egg]: https://eggjs.org
 [egg-full-qiniu]: https://github.com/alex-my/egg-full-qiniu

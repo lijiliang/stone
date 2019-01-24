@@ -1,7 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 class HomeController extends Controller {
   async index() {
@@ -14,10 +14,10 @@ class HomeController extends Controller {
     // var bb = bcrypt.compareSync("QWE112233!@#", aa)
     // console.log(hash, bb)
 
-    const hash = this.ctx.helper.createPasswordHash('sadfsadfasf')
-    console.log(hash)
+    const hash = this.ctx.helper.createPasswordHash('sadfsadfasf');
+    console.log(hash);
 
-    console.log(this.ctx.helper.hasPasswordHash('sadfsadfasf', '$2a$10$eOYg2f0VB7s8e6JQjltzkOCq9tfdA6Pyy8DS0OrExVoxiYRy0gKE2'))
+    console.log(this.ctx.helper.hasPasswordHash('sadfsadfasf', '$2a$10$eOYg2f0VB7s8e6JQjltzkOCq9tfdA6Pyy8DS0OrExVoxiYRy0gKE2'));
 
     this.ctx.body = 'hi, egg';
   }

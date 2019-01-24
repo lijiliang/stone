@@ -3,6 +3,9 @@
 const Controller = require('egg').Controller;
 const regrule = require('../utils/regrule');
 
+/**
+ * @controller userAccess 用户入口接口
+ */
 class UserAccessController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -13,7 +16,7 @@ class UserAccessController extends Controller {
       password: { type: 'string', format: regrule.regPassword, required: true, message: '密码不正确' },
       username: { type: 'string', required: true, message: '用户名不能为空' },
       email: { type: 'email', required: true, message: '邮箱不正确' },
-      // mobile: { type: 'string', required: true, format: regrule.regPhone, message: '手机号不正确' },
+      code: { type: 'string', required: true, message: '验证码不能为空' },
     };
 
     this.resetPswRule = {
@@ -22,7 +25,13 @@ class UserAccessController extends Controller {
       newpassword: { type: 'string', required: true, format: regrule.regPassword, message: '密码不正确' },
     };
   }
-  // 注册
+  /**
+   * @summary 用户注册
+   * @description 用户注册，记录用户账户/密码/邮箱
+   * @router post /api/v1/register
+   * @request body userAccessCreateRequest *body
+   * @response 200 baseResponseSuccess 注册成功
+   */
   async register() {
     const ctx = this.ctx;
     const { password, username, email, code } = ctx.request.body;
@@ -31,7 +40,8 @@ class UserAccessController extends Controller {
 
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
-    ctx.validate(this.registerParamRule, ctx.request.body);
+    // ctx.validate(this.registerParamRule, ctx.request.body);
+    ctx.validate(ctx.rule.userAccessCreateRequest, ctx.request.body);
 
     // 验证 验证码
     const verifycode = await ctx.service.captcha.verifycode(2, code);
@@ -65,10 +75,19 @@ class UserAccessController extends Controller {
     ctx.returnBody(200, '注册成功', res);
   }
 
-  // 用户登录
+  /**
+   * @summary 用户登录
+   * @description 用户登录
+   * @router post /api/v1/login
+   * @request body userAccessLoginRequest *body
+   * @response 200 baseResponseSuccess 登录成功
+   */
   async login() {
     const { ctx } = this;
     const { password, email, mobile } = ctx.request.body;
+    // 校验参数
+    ctx.validate(ctx.rule.userAccessLoginRequest, ctx.request.body);
+
     const token = await ctx.service.userAccess.login({ password, email, mobile });
 
     if (token) {
@@ -79,7 +98,13 @@ class UserAccessController extends Controller {
     }
   }
 
-  // 用户登出
+  /**
+   * @summary 用户登出
+   * @description 用户登出,退出网站
+   * @apikey Bearer
+   * @router get /api/v1/logout
+   * @response 200 baseResponseSuccess 登出成功
+   */
   async logout() {
     const { ctx } = this;
     // 调用 Service 进行业务处理
@@ -89,21 +114,34 @@ class UserAccessController extends Controller {
     ctx.returnBody(200, '登出成功', {});
   }
 
-  // 获取用户信息
+  /**
+   * @summary 获取用户信息
+   * @description 利用token获取用户信息
+   * @apikey Bearer
+   * @router get /api/v1/current
+   * @response 200 baseResponseSuccess 获取成功
+   */
   async current() {
     const { ctx } = this;
     const user = await ctx.service.userAccess.current();
     // 设置响应内容和响应状态码
-    ctx.returnBody(200, '登录成功', user);
+    ctx.returnBody(200, '获取成功', user);
   }
 
-  // 修改密码
+  /**
+   * @summary 修改密码
+   * @description 修改用户密码
+   * @router put /api/v1/resetpsw
+   * @apikey
+   * @request body userAccessResetPswRequest *body
+   * @response 200 baseResponseSuccess 修改密码成功
+   */
   async resetPsw() {
     const { ctx, service } = this;
     // 组装参数
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.resetPswRule, ctx.request.body);
+    ctx.validate(ctx.rule.userAccessResetPswRequest, ctx.request.body);
     // 调用 Service 进行业务处理
     const res = await service.userAccess.resetPsw(payload);
     // 设置响应内容和响应状态码

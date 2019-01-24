@@ -61,17 +61,20 @@ class CaptchaService extends Service {
   async verifycode(type, code) {
     const { ctx } = this;
     // const { type, code } = ctx.query;// 获取客户端发送的类型和验证码
-    const { login_code, register_code } = ctx.session; // 获取session保存的验证码
-
+    let { login_code, register_code } = ctx.session; // 获取session保存的验证码
     // 为降低验证难度，将所有转为大写再对比
     const _code = code.toUpperCase();
+
+    login_code = login_code && login_code.toUpperCase();
+    register_code = register_code && register_code.toUpperCase();
+    console.log(ctx.session, register_code, login_code);
 
     let hasSuccess = false;
     // 登陆验证码验证
     if (type === '1') { // 进行验证并返回结果
-      hasSuccess = _code === login_code.toUpperCase();
+      hasSuccess = _code === login_code;
     } else {
-      hasSuccess = _code === register_code.toUpperCase();
+      hasSuccess = _code === register_code;
     }
     return hasSuccess;
   }
