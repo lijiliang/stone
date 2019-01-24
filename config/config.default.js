@@ -120,5 +120,35 @@ module.exports = appInfo => {
     // },
   };
 
+  // 自动生成swagger apidoc文档
+  config.swaggerdoc = {
+    dirScanner: './app/controller',
+    apiInfo: {
+      title: 'stone-api',
+      description: 'stone Api文档',
+      version: '1.0.0',
+    },
+    schemes: [ 'http' ],
+    securityDefinitions: {
+      apikey: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+      },
+      // oauth2: {
+      //   type: 'oauth2',
+      //   tokenUrl: 'http://petstore.swagger.io/oauth/dialog',
+      //   flow: 'password',
+      //   scopes: {
+      //     'write:access_token': 'write access_token',
+      //     'read:access_token': 'read access_token',
+      //   },
+      // },
+    },
+    enableSecurity: true,
+    enable: true,
+    routerMap: true,
+  };
+
   return config;
 };

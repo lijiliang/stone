@@ -2,6 +2,9 @@
 
 const Controller = require('egg').Controller;
 
+/**
+ * @controller resource 资源接口
+ */
 class ResourceController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -10,7 +13,15 @@ class ResourceController extends Controller {
       path: { type: 'string', required: true, message: '路径不能为空' },
     };
   }
-  // 获取列表(分页/模糊)
+
+  /**
+   * @summary 资源列表(分页/模糊)
+   * @description 获取资源列表
+   * @router get /api/admin/v1/resource
+   * @apikey Bearer
+   * @request query integer pageNo 页码 默认 1
+   * @request query integer pageSize 单页数量 默认 20
+   */
   async index() {
     const ctx = this.ctx;
     const res = await ctx.service.permissions.resource.index();

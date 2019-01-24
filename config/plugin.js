@@ -28,6 +28,12 @@ exports.validator = {
   package: 'egg-y-validator',
 };
 
+exports.swaggerdoc = {
+  enable: true,
+  package: 'egg-swagger-doc',
+};
+
+
 exports.jwt = {
   enable: true,
   package: 'egg-jwt',
