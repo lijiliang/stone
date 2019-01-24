@@ -2,15 +2,23 @@
  * @Author: Benson
  * @Date: 2018-12-27 11:07:46
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-27 12:07:55
+ * @LastEditTime: 2019-01-24 14:55:12
  * @Description: 验证码
  */
 'use strict';
 
 const Controller = require('egg').Controller;
 
+/**
+ * @controller captcha 验证码接口
+ */
 class CaptchaController extends Controller {
-  // 生成图片验证码
+  /**
+   * @summary 生成图片验证码
+   * @description 生成注册及登录时的图片验证码
+   * @router get /api/v1/captcha
+   * @request query number * type=2是注册,type=1是登录
+   */
   async getcode() {
     const { ctx } = this;
     const res = await ctx.service.captcha.getcode();
