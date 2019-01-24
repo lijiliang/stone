@@ -1,6 +1,7 @@
 'use strict';
 const regrule = require('../../utils/regrule');
 module.exports = {
+  // 创建用户
   userCreateRequest: {
     username: { type: 'string', required: true, description: '用户名', message: '用户名不能为空' },
     password: { type: 'string', format: regrule.regPassword, required: true, description: '用户密码', message: '密码不正确' },
@@ -11,7 +12,6 @@ module.exports = {
   },
   // 用户信息，密码可以为空
   userUpdateRequest: {
-    userid: { type: 'string', required: true, description: '用户id', message: '用户id不能为空' },
     username: { type: 'string', required: true, description: '用户名', message: '用户名不能为空' },
     password: { type: 'string', format: regrule.regPassword, required: false, allowEmpty: true, description: '用户密码', message: '密码不正确' },
     email: { type: 'string', format: regrule.regEmail, required: true, example: '1951828835@qq.com', description: '邮箱', message: '邮箱不正确' },

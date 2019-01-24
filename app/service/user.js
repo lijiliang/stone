@@ -209,6 +209,7 @@ class UserService extends Service {
     const { ctx } = this;
     const _userid = ctx.state.user.data.userid;
     const existUser = await this.getUserByUserId(userid);
+    console.log('update', existUser);
     if (!existUser) {
       ctx.throw(422, '用户不存在');
     }

@@ -91,7 +91,8 @@ class UserController extends Controller {
   /**
    * @summary 修改用户
    * @description 修改用户，具有全部信息的创建
-   * @router put /api/v1/user
+   * @router put /api/v1/user/{id}
+   * @request path string *id id的值是用户的userid
    * @apikey
    * @request body userUpdateRequest *body
    * @response 200 userQueryRestonse 修改用户成功
@@ -101,6 +102,7 @@ class UserController extends Controller {
     // 组装参数
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
+
     // 校验参数
     ctx.validate(ctx.rule.userUpdateRequest, payload);
     // 调用 Service 进行业务处理
