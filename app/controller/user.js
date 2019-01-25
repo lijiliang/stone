@@ -71,7 +71,7 @@ class UserController extends Controller {
   }
 
   /**
-   * @summary  获取单个用户
+   * @summary 获取单个用户
    * @description 获取单个用户信息
    * @router get /api/v1/user/{id}
    * @request path string *id id的值是用户的userid
@@ -112,8 +112,8 @@ class UserController extends Controller {
   }
 
   /**
-   * @summary  删除单个用户
-   * @description 获取单个用户信息
+   * @summary 删除单个用户
+   * @description 删除单个用户信息
    * @router delete /api/v1/user/{id}
    * @request path string *id id的值是用户的userid
    * @apikey
@@ -130,11 +130,11 @@ class UserController extends Controller {
   }
 
   /**
-   * @summary  删除多个用户
+   * @summary 删除多个用户
    * @description 删除所选用户(字符串 转成 条件id[])
    * @router delete /api/v1/user
    * @apikey
-   * @request body userDeleteIdsRequest *ids
+   * @request body deleteIdsRequest *ids
    * @response 200 baseResponseSuccess 删除成功
    */
   async removes() {

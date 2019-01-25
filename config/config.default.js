@@ -125,7 +125,7 @@ module.exports = appInfo => {
     dirScanner: './app/controller',
     apiInfo: {
       title: 'stone-api',
-      description: 'stone Api文档',
+      description: 'stone Restful APIS',
       version: '1.0.0',
     },
     schemes: [ 'http' ],
@@ -147,7 +147,7 @@ module.exports = appInfo => {
     },
     enableSecurity: true,
     enable: true,
-    routerMap: true,
+    routerMap: false,
   };
 
   return config;
