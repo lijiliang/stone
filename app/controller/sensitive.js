@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-26 11:19:13
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-25 11:53:04
+ * @LastEditTime: 2019-01-25 12:02:53
  * @Description: 敏感词管理 控制器
  */
 'use strict';
@@ -13,14 +13,6 @@ const Controller = require('egg').Controller;
  * @controller sensitive 敏感词管理(后台)
  */
 class SensitiveController extends Controller {
-  constructor(ctx) {
-    super(ctx);
-    this.typeParamRule = {
-      typeid: { type: 'number', required: true, message: 'id必须是数字类型' },
-      content: { type: 'string', required: true, message: '敏感字不正确' },
-    };
-  }
-
   /**
    * @summary 添加敏感词类型
    * @description 添加敏感词类型
@@ -116,7 +108,7 @@ class SensitiveController extends Controller {
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.typeParamRule, payload);
+    ctx.validate(ctx.rule.sensitiveCreateRequest, payload);
     // 调用 Service 进行业务处理
     const res = await service.sensitive.update(id, payload);
     // 设置响应内容和响应状态码
