@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-27 18:29:45
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-25 14:57:59
+ * @LastEditTime: 2019-01-28 11:23:18
  * @Description: 文件上传
  */
 'use strict';
@@ -25,17 +25,22 @@ class UploadController extends Controller {
     const ctx = this.ctx;
     // 获取文件流
     const stream = await ctx.getFileStream();
-    // 上传文件到七牛
-    const res = await ctx.service.upload._createQiniuFile(stream);
+
+    const _imgBuffer = await ctx.helper.streamToBuffer(stream);
+    const size = _imgBuffer.length;
+
+    // 上传文件到七牛 size:是文件大小
+    const res = await ctx.service.upload._createQiniuFile(stream, size);
     // 文件响应
     ctx.returnBody(200, 'success', res);
   }
 
   /**
    * @summary 上传多文件到七牛云
-   * @description 上传多文件到七牛云,这里暂无找到如何展示上传多文件的方法
+   * @description 上传多文件到七牛云
    * @router post /api/v1/uploads
-   * @request formData file *file
+   * @request formData file *file1
+   * @request formData file *file2
    * @response 200 baseResponseSuccess success
    */
   async qiniuMultipartUpload() {
@@ -50,8 +55,14 @@ class UploadController extends Controller {
         if (!part.filename) {
           continue;
         }
+
+        const _imgBuffer = await ctx.helper.streamToBuffer(part);
+        const size = _imgBuffer.length;
+
+        // 上传文件到七牛 size:是文件大小
+
         // 上传文件到七牛
-        const url = await ctx.service.upload._createQiniuFile(part);
+        const url = await ctx.service.upload._createQiniuFile(part, size);
         imgs.push(url);
       }
     }

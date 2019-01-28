@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-20 17:36:17
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-15 16:22:20
+ * @LastEditTime: 2019-01-28 11:33:16
  * @Description: 用户管理模型
  */
 'use strict';

@@ -41,7 +41,7 @@ class UserController extends Controller {
    * @request query integer pageSize eg:10 单页数量 默认 10
    * @request query string sortBy 排序名字(按哪个名字排序)
    * @request query boolean descending 是否降序
-   * @request query body filter 例：filter: {"username":"","email":"1"}
+   * @request query body filter 例：filter: {"username":"","email":"1", "roleId":1}
    * @response 200 userListRestonse 用户列表数据
    */
   async index() {

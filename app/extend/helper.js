@@ -164,4 +164,20 @@ module.exports = {
       return r;
     }, []);
   },
+  /**
+ * stream流文件转Buffer
+ * https://www.codesky.me/archives/stream-to-buffer-transform.wind
+ * Stream，中文叫做流，和我们平时充值信仰的那个 Steam 还是差了那么一点的。所谓流，是一种消费的模型，被消费完就木有了，所以如果我们需要重复使用，就得存下来
+ * 可利用Buffer的length计算一个文件的大小
+ * @param {stream} stream
+ * @returns
+ */
+  streamToBuffer(stream) {
+    return new Promise((resolve, reject) => {
+      const buffers = [];
+      stream.on('error', reject);
+      stream.on('data', data => buffers.push(data));
+      stream.on('end', () => resolve(Buffer.concat(buffers)));
+    });
+  },
 };

@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-28 18:25:56
  * @LastEditors: Benson
- * @LastEditTime: 2018-12-29 16:24:49
+ * @LastEditTime: 2019-01-28 11:22:22
  * @Description: 文件上传 - 支持七牛云、本地
  */
 'use strict';
@@ -20,11 +20,11 @@ const Service = require('egg').Service;
 class UploadService extends Service {
   constructor(ctx) {
     super(ctx);
-    this.attributes = [ 'id', 'key', 'url', 'extname', 'created_at' ]; // 需要显示字段
+    this.attributes = [ 'id', 'key', 'url', 'mimeType', 'extname', 'size', 'created_at' ]; // 需要显示字段
   }
 
   // 创建七牛上传文件
-  async _createQiniuFile(stream) {
+  async _createQiniuFile(stream, size) {
     const { ctx } = this;
     // 自定义文件名
     const filename = ctx.helper.uuid() + path
@@ -32,14 +32,27 @@ class UploadService extends Service {
       .toLocaleLowerCase();
     const res = await this.app.fullQiniu.uploadStream(`stone/${filename}`, stream);
 
+    // 根据用户Id找出用户名
+    // const _userid = ctx.state.user && ctx.state.user.data.userid;
+    // let creator = '';
+    // if (_userid) {
+    //   const user = await this.ctx.model.User.findByIdWithUser(_userid);
+    //   creator = user.username;
+    // }
+
     // 上传到七牛云成功后写入一条数据到数据库
     if (res.ok) {
-      const _createInfo = {
+      const createInfo = {
         key: res.key,
         url: res.url,
         extname: path.extname(stream.filename),
+        mimeType: stream.mimeType, // 文件类型
+        size, // 文件大小
+        ip: ctx.ip ? ctx.ip : '127.0.0.1', // ip地址
+        // creator, // 上传者
       };
-      await ctx.service.upload.create(_createInfo);
+      console.log(createInfo);
+      await ctx.service.upload.create(createInfo);
     }
 
     return res;
@@ -47,15 +60,11 @@ class UploadService extends Service {
 
   /**
    * 文件上传到七牛成功后，写记录到数据库
-   * @param {Object} params {key: key, url: url链接, extname: 后缀名}
+   * @param {Object} params {key: key, url: url链接, extname: 后缀名, mimeType: 文件类型, size: 文件大小}
    */
-  async create({ key, url, extname }) {
+  async create(createInfo) {
     const { ctx } = this;
-    const res = await ctx.model.Files.create({
-      key,
-      url,
-      extname,
-    });
+    const res = await ctx.model.Files.create(createInfo);
     return res;
   }
 
