@@ -57,10 +57,11 @@ module.exports = app => {
 
 
   // 角色与用户关联
-  router.resources('roleUser', '/api/admin/v1/roleuser', app.jwt, controller.permissions.roleUser);
-
-  router.get('/api/admin/v1/roleresources/:id', app.jwt, controller.permissions.role.getRoleResources); // 获取角色与资源关联列表
-  router.post('/api/admin/v1/saveresources', app.jwt, controller.permissions.role.saveRoleResource); // 保存角色与资源关联
+  router.post('/api/admin/v1/roleuser', app.jwt, controller.permissions.rbac.svaeRoleUser);
+  // 获取角色与资源关联列表
+  router.get('/api/admin/v1/roleresources/:id', app.jwt, controller.permissions.rbac.getRoleResources);
+  // 保存角色与资源关联
+  router.post('/api/admin/v1/saveresources', app.jwt, controller.permissions.rbac.saveRoleResource);
 
   // 资源管理
   router.resources('resource', '/api/admin/v1/resource', app.jwt, controller.permissions.resource);

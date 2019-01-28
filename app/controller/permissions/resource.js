@@ -115,7 +115,13 @@ class ResourceController extends Controller {
     ctx.returnBody(200, '操作成功', res);
   }
 
-  // 获取菜单
+  /**
+   * @summary 获取菜单
+   * @description 获取获取菜单列表
+   * @router get /api/admin/v1/menu
+   * @apikey Bearer
+   * @response 200 baseResponseSuccess 获取成功
+   */
   async menu() {
     const { ctx, service } = this;
     // 调用Service进行业务处理

@@ -55,4 +55,24 @@ module.exports = {
     cache: { type: 'string', description: '缓存' },
     redirect: { type: 'string', description: '重定向' },
   },
+  // 角色
+  role: {
+    id: { type: 'number', description: 'id 唯一键' },
+    name: { type: 'string', description: '角色名字' },
+    code: { type: 'string', description: '角色标识' },
+    description: { type: 'string', description: '描述' },
+  },
+  // 角色与资源关联
+  role_resource: {
+    id: { type: 'number', description: 'id 唯一键' },
+    role_id: { type: 'number', description: '角色id' },
+    resource_id: { type: 'string', description: '资源id' },
+    resource_id_fe: { type: 'string', description: '资源id(前端专用)' },
+  },
+  // 角色与用户关联
+  role_user: {
+    id: { type: 'number', description: 'id 唯一键' },
+    role_id: { type: 'number', description: '角色id' },
+    user_id: { type: 'string', description: '用户Id' },
+  },
 };

@@ -2,27 +2,32 @@
 
 const Controller = require('egg').Controller;
 
+/**
+ * @controller role 角色管理(后台)
+ */
 class RoleController extends Controller {
-  constructor(ctx) {
-    super(ctx);
-    this.paramRule = {
-      name: { type: 'string', required: true, message: '名称不能为空' },
-      code: { type: 'string', required: true, message: '标识不能为空' },
-      description: { type: 'string', required: true, message: '描述不能为空' },
-    };
-    this.resourceParamRule = {
-      role_id: { type: 'number', required: true, message: '角色不能为空' },
-      resource_id: { type: 'array', required: true, message: '资源id不能为空' },
-    };
-  }
-  // 获取列表(分页/模糊)
+
+  /**
+   * @summary 角色列表
+   * @description 获取角色列表
+   * @router get /api/admin/v1/role
+   * @apikey Bearer
+   * @response 200 roleListRestonse 列表数据
+   */
   async index() {
     const ctx = this.ctx;
     const res = await ctx.service.permissions.role.index();
     ctx.returnBody(200, '列表数据', res);
   }
 
-  // 获取单个
+  /**
+   * @summary 获取单个角色
+   * @description 获取获取单个角色信息
+   * @router get /api/admin/v1/role/{id}
+   * @request path string *id
+   * @apikey
+   * @response 200 roleQueryRestonse 获取成功
+   */
   async show() {
     const { ctx, service } = this;
     // 组装参数
@@ -33,32 +38,55 @@ class RoleController extends Controller {
     ctx.returnBody(200, '获取成功', res);
   }
 
+  /**
+   * @summary 创建角色
+   * @description 创建角色
+   * @router post /api/admin/v1/role
+   * @apikey
+   * @request body roleCreateRequest *body
+   * @response 200 roleQueryRestonse 添加成功
+   */
   async create() {
     const { ctx, service } = this;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.paramRule, payload);
+    ctx.validate(ctx.rule.roleCreateRequest, payload);
     // 调用 Service 进行业务处理
     const res = await service.permissions.role.create(payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '添加成功', res);
   }
 
-  // 修改
+  /**
+   * @summary 更新角色信息
+   * @description 修改角色信息
+   * @router put /api/admin/v1/role/{id}
+   * @request path string *id
+   * @apikey
+   * @request body roleCreateRequest *body
+   * @response 200 roleQueryRestonse 修改成功
+   */
   async update() {
     const { ctx, service } = this;
     // 组装参数
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.paramRule, payload);
+    ctx.validate(ctx.rule.roleCreateRequest, payload);
     // 调用 Service 进行业务处理
     const res = await service.permissions.role.update(id, payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '修改成功', res);
   }
 
-  // 删除单个
+  /**
+   * @summary 删除单个角色
+   * @description 删除单个角色
+   * @router delete /api/admin/v1/role/{id}
+   * @request path string *id
+   * @apikey
+   * @response 200 baseResponseSuccess 删除成功
+   */
   async destroy() {
     const { ctx, service } = this;
     // 组装参数
@@ -69,7 +97,14 @@ class RoleController extends Controller {
     ctx.returnBody(200, '删除成功', res);
   }
 
-  // 删除所选(字符串 转成 条件id[])
+  /**
+   * @summary 删除多个角色
+   * @description 删除所选接口(字符串 转成 条件id[])
+   * @router delete /api/admin/v1/role
+   * @apikey
+   * @request body deleteIdsRequest *ids
+   * @response 200 baseResponseSuccess 删除成功
+   */
   async removes() {
     const { ctx, service } = this;
     const { ids } = ctx.request.body;
@@ -81,37 +116,6 @@ class RoleController extends Controller {
     ctx.returnBody(200, '操作成功', res);
   }
 
-  // 保存角色与资源关联
-  async saveRoleResource() {
-    const { ctx, service } = this;
-    const payload = ctx.request.body || {};
-    // 校验参数
-    ctx.validate(this.resourceParamRule, payload);
-    const _data = {
-      role_id: payload.role_id,
-      resource_id: payload.resource_id.join(','),
-      resource_id_fe: payload.resource_id_fe.join(','),
-    };
-    // 调用 Service 进行业务处理
-    const res = await service.permissions.role.saveRoleResource(_data);
-    // 设置响应内容和响应状态码
-    ctx.returnBody(200, '保存成功', res);
-  }
-
-  // 获取角色与资源关联
-  async getRoleResources() {
-    const { ctx, service } = this;
-    // 组装参数
-    const { id } = ctx.params;
-    // 调用 Service 进行业务处理
-    const res = await service.permissions.role.getRoleResources(id);
-    // 设置响应内容和响应状态码
-    if (res) {
-      ctx.returnBody(200, '获取成功', res);
-    } else {
-      ctx.returnBody(200, '此角色暂无资源关联,请添加', res, false);
-    }
-  }
 }
 
 module.exports = RoleController;
