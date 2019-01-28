@@ -6,21 +6,12 @@ const Controller = require('egg').Controller;
  * @controller resource 资源接口
  */
 class ResourceController extends Controller {
-  constructor(ctx) {
-    super(ctx);
-    this.paramRule = {
-      title: { type: 'string', required: true, message: '标题不能为空' },
-      path: { type: 'string', required: true, message: '路径不能为空' },
-    };
-  }
-
   /**
-   * @summary 资源列表(分页/模糊)
+   * @summary 资源列表
    * @description 获取资源列表
    * @router get /api/admin/v1/resource
    * @apikey Bearer
-   * @request query integer pageNo 页码 默认 1
-   * @request query integer pageSize 单页数量 默认 20
+   * @response 200 baseResponseSuccess 列表数据
    */
   async index() {
     const ctx = this.ctx;
@@ -28,7 +19,14 @@ class ResourceController extends Controller {
     ctx.returnBody(200, '列表数据', res);
   }
 
-  // 获取单个
+  /**
+   * @summary 获取单个资源
+   * @description 获取单个资源信息
+   * @router get /api/admin/v1/resource/{id}
+   * @request path string *id
+   * @apikey
+   * @response 200 resourceQueryRestonse 获取成功
+   */
   async show() {
     const { ctx, service } = this;
     // 组装参数
@@ -39,32 +37,55 @@ class ResourceController extends Controller {
     ctx.returnBody(200, '获取成功', res);
   }
 
+  /**
+   * @summary 创建资源
+   * @description 创建资源
+   * @router post /api/admin/v1/resource/
+   * @apikey
+   * @request body resourceCreateRequest *body
+   * @response 200 resourceQueryRestonse 保存成功
+   */
   async create() {
     const { ctx, service } = this;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.paramRule, payload);
+    ctx.validate(ctx.rule.resourceCreateRequest, payload);
     // 调用 Service 进行业务处理
     const res = await service.permissions.resource.create(payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '保存成功', res);
   }
 
-  // 修改
+  /**
+   * @summary 更新资源
+   * @description 修改资源
+   * @router put /api/admin/v1/resource/{id}
+   * @request path string *id
+   * @apikey
+   * @request body resourceCreateRequest *body
+   * @response 200 resourceQueryRestonse 修改成功
+   */
   async update() {
     const { ctx, service } = this;
     // 组装参数
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(this.paramRule, payload);
+    ctx.validate(ctx.rule.resourceCreateRequest, payload);
     // 调用 Service 进行业务处理
     const res = await service.permissions.resource.update(id, payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '修改成功', res);
   }
 
-  // 删除单个
+  /**
+   * @summary 删除单条资源
+   * @description 删除单条资源
+   * @router delete /api/admin/v1/resource/{id}
+   * @request path string *id
+   * @apikey
+   * @response 200 baseResponseSuccess 删除成功
+   */
   async destroy() {
     const { ctx, service } = this;
     // 组装参数
@@ -75,7 +96,14 @@ class ResourceController extends Controller {
     ctx.returnBody(200, '删除成功', res);
   }
 
-  // 删除所选(字符串 转成 条件id[])
+  /**
+   * @summary 删除多条资源
+   * @description 删除所选资源(字符串 转成 条件id[])
+   * @router delete /api/admin/v1/resource/
+   * @apikey
+   * @request body deleteIdsRequest *ids
+   * @response 200 baseResponseSuccess 操作成功
+   */
   async removes() {
     const { ctx, service } = this;
     const { ids } = ctx.request.body;

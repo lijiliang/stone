@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-28 18:25:56
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-28 11:22:22
+ * @LastEditTime: 2019-01-28 11:38:58
  * @Description: 文件上传 - 支持七牛云、本地
  */
 'use strict';
@@ -33,12 +33,12 @@ class UploadService extends Service {
     const res = await this.app.fullQiniu.uploadStream(`stone/${filename}`, stream);
 
     // 根据用户Id找出用户名
-    // const _userid = ctx.state.user && ctx.state.user.data.userid;
-    // let creator = '';
-    // if (_userid) {
-    //   const user = await this.ctx.model.User.findByIdWithUser(_userid);
-    //   creator = user.username;
-    // }
+    const _userid = ctx.state.user && ctx.state.user.data.userid;
+    let creator = '';
+    if (_userid) {
+      const user = await this.ctx.model.User.findByIdWithUser(_userid);
+      creator = user.username;
+    }
 
     // 上传到七牛云成功后写入一条数据到数据库
     if (res.ok) {
@@ -49,7 +49,7 @@ class UploadService extends Service {
         mimeType: stream.mimeType, // 文件类型
         size, // 文件大小
         ip: ctx.ip ? ctx.ip : '127.0.0.1', // ip地址
-        // creator, // 上传者
+        creator, // 上传者
       };
       console.log(createInfo);
       await ctx.service.upload.create(createInfo);

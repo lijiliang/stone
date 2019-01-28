@@ -37,4 +37,22 @@ module.exports = {
     typeid: { type: 'number', description: '敏感词类型Id' },
     content: { type: 'string', description: '敏感词' },
   },
+  // 资源（菜单)
+  resource: {
+    id: { type: 'number', description: '资源id' },
+    pid: { type: 'number', description: '父id' },
+    pids: { type: 'number', description: '父id集合' },
+    path: { type: 'string', description: '路径' },
+    name: { type: 'string', description: 'name' },
+    title: { type: 'string', description: '标题' },
+    icon: { type: 'string', description: 'icon' },
+    component: { type: 'string', description: '组件' },
+    componentPath: { type: 'string', description: '组件路径' },
+    type: { type: 'number', description: '类型，1:菜单; 2:功能' },
+    sort: { type: 'number', description: '排序' },
+    isLock: { type: 'Boolean', description: '是否锁定' },
+    permission: { type: 'string', description: '权限标识' },
+    cache: { type: 'string', description: '缓存' },
+    redirect: { type: 'string', description: '重定向' },
+  },
 };

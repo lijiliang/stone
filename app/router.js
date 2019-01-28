@@ -42,10 +42,10 @@ module.exports = app => {
   // 上传图片
   apiV1Router.post('/uploadlocal', app.jwt, controller.upload.uploadLoacl); // 上传单文件到本地
   apiV1Router.post('/uploadlocals', app.jwt, controller.upload.multipartUploadLocal); // 上传多文件到本地
-  apiV1Router.post('/uploads', controller.upload.qiniuMultipartUpload); // 上传多文件到七牛云
-  apiV1Router.post('/upload', controller.upload.create);
-  apiV1Router.get('/upload', controller.upload.index);
-  apiV1Router.delete('/upload/:id', controller.upload.destroy);
+  apiV1Router.post('/uploads', app.jwt, controller.upload.qiniuMultipartUpload); // 上传多文件到七牛云
+  apiV1Router.post('/upload', app.jwt, controller.upload.create);
+  apiV1Router.get('/upload', app.jwt, controller.upload.index);
+  apiV1Router.delete('/upload/:id', app.jwt, controller.upload.destroy);
 
   // 接口管理
   router.resources('interface', '/api/v1/interface', app.jwt, controller.interface);

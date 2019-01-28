@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-27 18:29:45
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-28 11:23:18
+ * @LastEditTime: 2019-01-28 11:39:38
  * @Description: 文件上传
  */
 'use strict';
@@ -19,6 +19,7 @@ class UploadController extends Controller {
    * @description 上传单文件到七牛云
    * @router post /api/v1/upload
    * @request formData file *file
+   * @apikey
    * @response 200 baseResponseSuccess success
    */
   async create() {
@@ -39,6 +40,7 @@ class UploadController extends Controller {
    * @summary 上传多文件到七牛云
    * @description 上传多文件到七牛云
    * @router post /api/v1/uploads
+   * @apikey
    * @request formData file *file1
    * @request formData file *file2
    * @response 200 baseResponseSuccess success
