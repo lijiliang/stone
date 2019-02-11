@@ -67,4 +67,7 @@ module.exports = app => {
   router.resources('resource', '/api/admin/v1/resource', app.jwt, controller.permissions.resource);
   router.get('/api/admin/v1/menu', app.jwt, controller.permissions.resource.menu); // 当前用户所能访问的资源(菜单)
 
+  // cms 栏目管理
+  router.resources('category', '/api/admin/v1/category', app.jwt, controller.cms.category);
+
 };

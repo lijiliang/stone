@@ -3,7 +3,7 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller rbac 角色、用户、资源对应相关接口管理
+ * @controller permissions-rbac 角色、用户、资源对应相关接口管理
  */
 class RbacController extends Controller {
   constructor(ctx) {

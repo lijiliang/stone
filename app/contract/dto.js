@@ -75,4 +75,23 @@ module.exports = {
     role_id: { type: 'number', description: '角色id' },
     user_id: { type: 'string', description: '用户Id' },
   },
+  // cms 栏目
+  category: {
+    id: { type: 'number', description: '资源id' },
+    pid: { type: 'number', description: '父id' },
+    name: { type: 'string', description: '栏目名称' },
+    en_name: { type: 'string', description: '英文栏目名称' },
+    code: { type: 'string', description: '编码' },
+    route: { type: 'string', description: '路由' },
+    type: { type: 'string', description: '类型：channel栏目、page单页、link外链' },
+    url: { type: 'string', description: '外链' },
+    articleid: { type: 'number', description: '单页关联文章id' },
+    image: { type: 'string', description: '栏目图' },
+    description: { type: 'string', description: '描述' },
+    meta_title: { type: 'string', description: 'seo标题' },
+    meta_keywords: { type: 'string', description: 'seo关键词' },
+    meta_description: { type: 'string', description: 'seo描述' },
+    sort: { type: 'number', description: '排序' },
+    enable: { type: 'Boolean', description: '是否启用' },
+  },
 };

@@ -3,7 +3,7 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller role 角色管理(后台)
+ * @controller permissions-role 角色管理(后台)
  */
 class RoleController extends Controller {
 

@@ -3,67 +3,67 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller permissions-resource 资源接口
+ * @controller cms-category 栏目接口
  */
-class ResourceController extends Controller {
+class CategoryController extends Controller {
   /**
-   * @summary 资源列表
-   * @description 获取资源列表
-   * @router get /api/admin/v1/resource
+   * @summary 栏目列表
+   * @description 获取栏目列表
+   * @router get /api/admin/v1/category
    * @apikey Bearer
    * @response 200 baseResponseSuccess 列表数据
    */
   async index() {
     const ctx = this.ctx;
-    const res = await ctx.service.permissions.resource.index();
+    const res = await ctx.service.cms.category.index();
     ctx.returnBody(200, '列表数据', res);
   }
 
   /**
-   * @summary 获取单个资源
-   * @description 获取单个资源信息
-   * @router get /api/admin/v1/resource/{id}
+   * @summary 获取单个栏目
+   * @description 获取单个栏目信息
+   * @router get /api/admin/v1/category/{id}
    * @request path string *id
    * @apikey
-   * @response 200 resourceQueryRestonse 获取成功
+   * @response 200 categoryQueryRestonse 获取成功
    */
   async show() {
     const { ctx, service } = this;
     // 组装参数
     const { id } = ctx.params;
     // 调用Service进行业务处理
-    const res = await service.permissions.resource.show(id);
+    const res = await service.cms.category.show(id);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '获取成功', res);
   }
 
   /**
-   * @summary 创建资源
-   * @description 创建资源
-   * @router post /api/admin/v1/resource/
+   * @summary 创建栏目
+   * @description 创建栏目
+   * @router post /api/admin/v1/category/
    * @apikey
-   * @request body resourceCreateRequest *body
-   * @response 200 resourceQueryRestonse 保存成功
+   * @request body categoryCreateRequest *body
+   * @response 200 categoryQueryRestonse 保存成功
    */
   async create() {
     const { ctx, service } = this;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(ctx.rule.resourceCreateRequest, payload);
+    ctx.validate(ctx.rule.categoryCreateRequest, payload);
     // 调用 Service 进行业务处理
-    const res = await service.permissions.resource.create(payload);
+    const res = await service.cms.category.create(payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '保存成功', res);
   }
 
   /**
-   * @summary 更新资源
-   * @description 修改资源
-   * @router put /api/admin/v1/resource/{id}
+   * @summary 更新栏目
+   * @description 修改栏目
+   * @router put /api/admin/v1/category/{id}
    * @request path string *id
    * @apikey
-   * @request body resourceCreateRequest *body
-   * @response 200 resourceQueryRestonse 修改成功
+   * @request body categoryCreateRequest *body
+   * @response 200 categoryQueryRestonse 修改成功
    */
   async update() {
     const { ctx, service } = this;
@@ -71,17 +71,17 @@ class ResourceController extends Controller {
     const { id } = ctx.params;
     const payload = ctx.request.body || {};
     // 校验参数
-    ctx.validate(ctx.rule.resourceCreateRequest, payload);
+    ctx.validate(ctx.rule.categoryCreateRequest, payload);
     // 调用 Service 进行业务处理
-    const res = await service.permissions.resource.update(id, payload);
+    const res = await service.cms.category.update(id, payload);
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '修改成功', res);
   }
 
   /**
-   * @summary 删除单条资源
-   * @description 删除单条资源
-   * @router delete /api/admin/v1/resource/{id}
+   * @summary 删除单条栏目
+   * @description 删除单条栏目
+   * @router delete /api/admin/v1/category/{id}
    * @request path string *id
    * @apikey
    * @response 200 baseResponseSuccess 删除成功
@@ -91,15 +91,15 @@ class ResourceController extends Controller {
     // 组装参数
     const { id } = ctx.params;
     // 调用 Service进行业务处理
-    const res = await service.permissions.resource.destroy(id);
+    const res = await service.cms.category.destroy(id);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '删除成功', res);
   }
 
   /**
-   * @summary 删除多条资源
-   * @description 删除所选资源(字符串 转成 条件id[])
-   * @router delete /api/admin/v1/resource/
+   * @summary 删除多条栏目
+   * @description 删除所选栏目(字符串 转成 条件id[])
+   * @router delete /api/admin/v1/category/
    * @apikey
    * @request body deleteIdsRequest *ids
    * @response 200 baseResponseSuccess 操作成功
@@ -110,7 +110,7 @@ class ResourceController extends Controller {
     // 组装参数
     const _ids = ids.split(',');
     // 调用 Service 进行业务处理
-    const res = await service.permissions.resource.removes(_ids);
+    const res = await service.cms.category.removes(_ids);
     // 设置响应内容和响应状态
     ctx.returnBody(200, '操作成功', res);
   }
@@ -125,10 +125,10 @@ class ResourceController extends Controller {
   async menu() {
     const { ctx, service } = this;
     // 调用Service进行业务处理
-    const res = await service.permissions.resource.menu();
+    const res = await service.cms.category.menu();
     // 设置响应内容和响应状态码
     ctx.returnBody(200, '获取成功', res);
   }
 }
 
-module.exports = ResourceController;
+module.exports = CategoryController;

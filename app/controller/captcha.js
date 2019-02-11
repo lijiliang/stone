@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-27 11:07:46
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-24 14:55:12
+ * @LastEditTime: 2019-01-29 10:06:52
  * @Description: 验证码
  */
 'use strict';
@@ -17,7 +17,7 @@ class CaptchaController extends Controller {
    * @summary 生成图片验证码
    * @description 生成注册及登录时的图片验证码
    * @router get /api/v1/captcha
-   * @request query number * type=2是注册,type=1是登录
+   * @Request query number type eg:2 type=2是注册,type=1是登录
    */
   async getcode() {
     const { ctx } = this;
