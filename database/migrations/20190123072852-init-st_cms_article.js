@@ -29,6 +29,7 @@ module.exports = {
       enable: { type: BOOLEAN, defaultValue: true }, // 是否启用
       isDeleted: { type: BOOLEAN, defaultValue: false }, // 是否删除
       creator: { type: STRING(30), defaultValue: '' }, // 创建人
+      modifier: { type: STRING(30), defaultValue: '' }, // 修改人
       created_at: { type: DATE }, // 创建时间
       updated_at: { type: DATE }, // 更新时间
       deleted_at: { type: DATE }, // 删除时间
