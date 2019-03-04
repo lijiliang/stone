@@ -3,7 +3,7 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller cms-category 栏目接口
+ * @controller cms-category 栏目管理接口
  */
 class CategoryController extends Controller {
   /**
