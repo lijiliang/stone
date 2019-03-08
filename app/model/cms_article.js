@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2019-01-10 11:08:05
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-29 15:32:24
+ * @LastEditTime: 2019-03-07 16:30:33
  * @Description: 文章信息表模型
  */
 
@@ -35,6 +35,7 @@ module.exports = app => {
     enable: { type: BOOLEAN, defaultValue: true }, // 是否启用
     isDeleted: { type: BOOLEAN, defaultValue: false }, // 是否删除
     creator: { type: STRING(30), defaultValue: '' }, // 创建人
+    modifier: { type: STRING(30), defaultValue: '' }, // 修改人
     created_at: { type: DATE }, // 创建时间
     updated_at: { type: DATE }, // 更新时间
     deleted_at: { type: DATE }, // 删除时间

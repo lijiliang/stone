@@ -49,13 +49,30 @@ class CategoryService extends Service {
   }
 
   async create(payload) {
-    const { ctx } = this;
+    const { ctx, service } = this;
     let _data = {};
+    const { type, name } = payload;
     const hasCmsCategory = await this.getCmsCategory(payload);
     if (hasCmsCategory) {
       _data = await hasCmsCategory.update(payload);
     } else {
-      _data = await ctx.model.CmsCategory.create(payload);
+      if (type === 'page') {
+        // 单页,创建栏目的时候，同时创建一篇对应的文章
+        _data = await ctx.model.CmsCategory.create(payload);
+        // 创建单页文章的数据
+        const createArticle = {
+          categoryid: _data.id,
+          title: name,
+        };
+        const articleData = await service.cms.article.create(createArticle);
+        const articleid = articleData.id; // 拿到文章id
+        // 用拿到的文章id更新当前栏目表的articleid
+        await _data.update({
+          articleid,
+        });
+      } else {
+        _data = await ctx.model.CmsCategory.create(payload);
+      }
     }
     // const _data = await ctx.model.CmsCategory.create(payload);
     return _data;
