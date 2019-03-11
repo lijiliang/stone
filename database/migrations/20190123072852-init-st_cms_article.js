@@ -9,7 +9,7 @@ module.exports = {
       categoryid: { type: INTEGER }, // 栏目Id
       title: { type: STRING(50), allowNull: false }, // 标题
       subtitle: { type: STRING(50), defaultValue: '' }, // 副标题
-      type: { type: STRING(10), defaultValue: '' }, // 文章类型:info资讯、img图片
+      type: { type: STRING(10), defaultValue: '' }, // 文章类型:info资讯、img图片, page单页
       image: { type: STRING(100), defaultValue: '' }, // 图片
       thumbnil: { type: STRING(100), defaultValue: '' }, // 缩略图
       url: { type: STRING(150), defaultValue: '' }, // 外链

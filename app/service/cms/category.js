@@ -63,6 +63,7 @@ class CategoryService extends Service {
         const createArticle = {
           categoryid: _data.id,
           title: name,
+          type: 'page',
         };
         const articleData = await service.cms.article.create(createArticle);
         const articleid = articleData.id; // 拿到文章id

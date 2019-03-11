@@ -2,6 +2,7 @@
 
 module.exports = {
   articleCreateRequest: {
+    categoryid: { type: 'number', required: false, allowEmpty: true, description: '栏目id' },
     title: { type: 'string', required: true, description: '标题', message: '标题不能为空' },
     subtitle: { type: 'string', required: false, allowEmpty: true, description: '副标题' },
     type: { type: 'string', required: false, allowEmpty: true, description: '文章类型' },
@@ -20,7 +21,7 @@ module.exports = {
     meta_keywords: { type: 'string', required: false, allowEmpty: true, description: 'seo关键词' },
     meta_description: { type: 'string', required: false, allowEmpty: true, description: 'seo描述' },
     sort: { type: 'number', required: false, allowEmpty: true, description: '排序' },
-    enable: { type: 'number', required: false, allowEmpty: true, description: '是否启用' },
+    enable: { type: 'boolean', required: false, allowEmpty: true, description: '是否启用' },
     creator: { type: 'string', required: false, allowEmpty: true, description: '创建人' },
     modifier: { type: 'string', required: false, allowEmpty: true, description: '修改人' },
   },

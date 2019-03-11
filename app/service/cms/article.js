@@ -6,13 +6,16 @@ class ArticleService extends Service {
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
-    const { current, pageSize, name, code, sortBy, descending } = ctx.query;
+    const { current, pageSize, name, code, sortBy, descending, categoryid } = ctx.query;
     const _current = current ? current : 1; // 当前页数
     const _pageSize = pageSize ? pageSize : 10; // 每页条数
     const _offset = ((Number(_current)) - 1) * Number(_pageSize); // 偏移量
 
     // 模糊查询
     const _where = {};
+    if (categoryid) {
+      _where.categoryid = categoryid;
+    }
     if (name) {
       _where.name = {
         $like: `%${name}%`,
