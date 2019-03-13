@@ -72,5 +72,5 @@ module.exports = app => {
 
   // cms 文章管理
   router.resources('article', '/api/admin/v1/article', app.jwt, controller.cms.article);
-
+  router.delete('/api/admin/v1/article', app.jwt, controller.cms.article.removes); // 同时删除多个文章
 };

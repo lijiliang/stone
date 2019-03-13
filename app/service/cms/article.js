@@ -3,6 +3,17 @@
 const Service = require('egg').Service;
 
 class ArticleService extends Service {
+  /*
+   * 根据userId查找用户
+   * @param {String} userId 用户Id
+   * @return {Promise[user]} 承载用户的 Promise 对象
+   */
+  async getUserByUserId(userid) {
+    const query = { userid };
+    return this.ctx.model.User.findOne({
+      where: query,
+    });
+  }
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
@@ -71,18 +82,23 @@ class ArticleService extends Service {
   // 创建文章
   async create(payload) {
     const { ctx } = this;
-    const _data = await ctx.model.CmsArticle.create(payload);
+    const _userid = ctx.state.user.data.userid;
+    const existUser = await this.getUserByUserId(_userid); // 取得编辑者的信息
+    const _payload = Object.assign({}, payload, { creator: existUser.username });
+    const _data = await ctx.model.CmsArticle.create(_payload);
     return _data;
   }
   // 更新
   async update(id, payload) {
     const { ctx } = this;
+    const _userid = ctx.state.user.data.userid;
+    const existUser = await this.getUserByUserId(_userid); // 取得编辑者的信息
     const data = await ctx.model.CmsArticle.findById(id);
     if (!data) {
       ctx.throw(422, 'id不存在');
     }
-
-    const updateData = await data.update(payload);
+    const _payload = Object.assign({}, payload, { modifier: existUser.username });
+    const updateData = await data.update(_payload);
     return updateData;
   }
   // 删除
