@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-27 18:29:45
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-28 11:39:38
+ * @LastEditTime: 2019-03-14 11:27:49
  * @Description: 文件上传
  */
 'use strict';
@@ -27,11 +27,11 @@ class UploadController extends Controller {
     // 获取文件流
     const stream = await ctx.getFileStream();
 
-    const _imgBuffer = await ctx.helper.streamToBuffer(stream);
-    const size = _imgBuffer.length;
+    // const _imgBuffer = await ctx.helper.streamToBuffer(stream);
+    // const size = _imgBuffer.length;
 
     // 上传文件到七牛 size:是文件大小
-    const res = await ctx.service.upload._createQiniuFile(stream, size);
+    const res = await ctx.service.upload._createQiniuFile(stream);
     // 文件响应
     ctx.returnBody(200, 'success', res);
   }

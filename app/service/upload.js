@@ -2,7 +2,7 @@
  * @Author: Benson
  * @Date: 2018-12-28 18:25:56
  * @LastEditors: Benson
- * @LastEditTime: 2019-01-28 11:38:58
+ * @LastEditTime: 2019-03-14 15:01:18
  * @Description: 文件上传 - 支持七牛云、本地
  */
 'use strict';
@@ -24,7 +24,7 @@ class UploadService extends Service {
   }
 
   // 创建七牛上传文件
-  async _createQiniuFile(stream, size) {
+  async _createQiniuFile(stream) {
     const { ctx } = this;
     // 自定义文件名
     const filename = ctx.helper.uuid() + path
@@ -45,13 +45,12 @@ class UploadService extends Service {
       const createInfo = {
         key: res.key,
         url: res.url,
-        extname: path.extname(stream.filename),
+        extname: path.extname(stream.filename).substring(1),
         mimeType: stream.mimeType, // 文件类型
-        size, // 文件大小
+        // size, // 文件大小
         ip: ctx.ip ? ctx.ip : '127.0.0.1', // ip地址
         creator, // 上传者
       };
-      console.log(createInfo);
       await ctx.service.upload.create(createInfo);
     }
 
