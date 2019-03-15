@@ -10,9 +10,14 @@ class ArticleController extends Controller {
    * @summary 文章列表
    * @description 获取文章列表
    * @router get /api/admin/v1/article
+   * @Request query number categoryid 栏目id
+   * @Request query number current eg:1 当前第几页
+   * @Request query number pageSize eg:10 一页多少条
    * @apikey Bearer
    * @response 200 articleListRestonse 列表数据
    */
+
+  //  current=1&pageSize=15&sortBy=&descending=false&filter=%7B%22username%22:%22%22,%22email%22:%22%22%7D&categoryid=3
   async index() {
     const ctx = this.ctx;
     const res = await ctx.service.cms.article.index();

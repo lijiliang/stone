@@ -17,7 +17,7 @@ class ArticleService extends Service {
   async index() {
     // 当前页数：current; 每页条数：pageSize;  总数：total;
     const { ctx } = this;
-    const { current, pageSize, name, code, sortBy, descending, categoryid } = ctx.query;
+    const { current, pageSize, title, sortBy, descending, categoryid } = ctx.query;
     const _current = current ? current : 1; // 当前页数
     const _pageSize = pageSize ? pageSize : 10; // 每页条数
     const _offset = ((Number(_current)) - 1) * Number(_pageSize); // 偏移量
@@ -27,14 +27,9 @@ class ArticleService extends Service {
     if (categoryid) {
       _where.categoryid = categoryid;
     }
-    if (name) {
-      _where.name = {
-        $like: `%${name}%`,
-      };
-    }
-    if (code) {
-      _where.code = {
-        $like: `%${code}%`,
+    if (title) {
+      _where.title = {
+        $like: `%${title}%`,
       };
     }
 
