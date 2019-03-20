@@ -121,4 +121,20 @@ module.exports = {
     creator: { type: 'string', description: '创建人' },
     modifier: { type: 'string', description: '修改人' },
   },
+  recommend: { // cms推荐位管理
+    id: { type: 'number', description: '记录Id' },
+    title: { type: 'string', description: '标题' },
+    code: { type: 'string', description: '编码' },
+    picPath: { type: 'string', description: '图片路径' },
+    orderBy: { type: 'number', description: '排序' },
+    enable: { type: 'number', description: '是否启用' },
+    isDeleted: { type: 'number', description: '是否删除' },
+    creator: { type: 'string', description: '创建人' },
+    modifier: { type: 'string', description: '修改人' },
+  },
+  recommendArticle: {
+    recommendId: { type: 'number', description: '推荐位id' },
+    articleId: { type: 'number', description: '文章id' },
+    sort: { type: 'number', description: '排序' },
+  },
 };
