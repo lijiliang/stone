@@ -73,4 +73,9 @@ module.exports = app => {
   // cms 文章管理
   router.resources('article', '/api/admin/v1/article', app.jwt, controller.cms.article);
   router.delete('/api/admin/v1/article', app.jwt, controller.cms.article.removes); // 同时删除多个文章
+
+  // cms 推荐位管理
+  router.resources('recommend', '/api/admin/v1/recommend', app.jwt, controller.cms.recommend);
+  router.delete('/api/admin/v1/recommend', app.jwt, controller.cms.recommend.removes); // 同时删除多个推荐位
+
 };

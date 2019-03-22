@@ -9,7 +9,7 @@ module.exports = {
       title: { type: STRING(255) }, // 标题
       code: { type: STRING(20) }, // 编码
       picPath: { type: STRING(50) }, // 图片路径
-      orderBy: { type: STRING(10) }, // '排序方式
+      orderBy: { type: STRING(10) }, // '排序方式  sortAsc-按序号升序  timeDesc-按时间倒序
       enable: { type: BOOLEAN, defaultValue: true }, // 是否启用
       isDeleted: { type: BOOLEAN, defaultValue: false }, // 是否删除
       creator: { type: STRING(30), defaultValue: '' }, // 创建人
